@@ -7,6 +7,8 @@ using Root.Models.Utils;
 using Root.Services.DBContext;
 using Root.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Root.Models.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace App.AdminPortal.Controllers
 {
@@ -46,6 +48,20 @@ namespace App.AdminPortal.Controllers
             return View(Tuple.Create(deviceTypes, sFGetDevice));
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> AddDeviceMaster(DeviceTypeData deviceType)
+        {
+            DeviceType device = new DeviceType() { 
+              DeviceName = deviceType.DeviceName
+            };
+
+            await _DeviceType.Create(device);
+            await _DeviceType.Save();
+            HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            return RedirectToAction("DeviceMaster", "MasterData");
+        }
+
+
+
     }
 }
