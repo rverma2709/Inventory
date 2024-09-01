@@ -51,6 +51,19 @@ namespace Root.Models.Utils
     {
         public static string ServerIP { get; set; }
         public static string LogPath { get; set; }
+        public static string GetSortingClass(string fieldname, string cols, string order)
+        {
+            string str = "";
+            if (cols == fieldname)
+            {
+                str = " onclick=\"CallSort(this, '" + fieldname + "','" + ((order == "Asc") ? "Desc" : "Asc") + "')\" class=\"sort-icon sorting_" + order.ToLower() + "\" ";
+            }
+            else
+            {
+                str = " onclick=\"CallSort(this, '" + fieldname + "','Asc')\" class=\" sort-icon sorting sorting_asc\" ";
+            }
+            return str;
+        }
         public static string GetApplicationName()
         {
             return PlatformServices.Default.Application.ApplicationName;

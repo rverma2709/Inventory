@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace Root.Models.StoredProcedures
 {
+    [StoredProcedureName("GetDeviceType")]
     public class SFGetDeviceType: SFParameters
     {
         public SFGetDeviceType()
         {
-            cols = "AnnexureDetailsId";
+            cols = "DeviceTypeId";
             order = "DESC";
         }
         [QueryParam]
-        public string BatchNo { get; set; }
-        [QueryParam]
-        public string AnnexureType { get; set; }
-        [QueryParam]
-        public long? BankId { get; set; }
+        public string DeviceName { get; set; }
+       
     }
 }

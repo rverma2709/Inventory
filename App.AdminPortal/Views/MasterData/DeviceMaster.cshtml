@@ -1,22 +1,30 @@
-﻿@model Root.Models.ViewModels.DeviceTypeData
+﻿@* @model Root.Models.ViewModels.DeviceTypeData *@
+@model Tuple<List<Root.Models.Tables.DeviceType>, Root.Models.StoredProcedures.SFGetDeviceType>
 @{
-   // ViewData["Title"] = "Device Master";
+    Root.Models.Tables.DeviceType _model = new Root.Models.Tables.DeviceType();
+    IndexModel indexModel = new IndexModel();
+    indexModel.ControllerName = "MasterData";
+    indexModel.ActionName = "DeviceMaster";
+}
+@{
+    
     ViewBag.Title = ViewBag.PageModelName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link href="~/css/tableheader.css" rel="stylesheet" />
 <div class="page-wrapper">
     <div class="content container-fluid">
 
         <div class="page-header">
-            <div class="content-page-header ">
-                <h5> @ViewBag.Title</h5>
+            <div class="content-page-header">
+                <h5>@ViewBag.Title</h5>
                 <div class="list-btn">
                     <ul class="filter-list">
                         <li>
                             <a class="btn btn-filters w-auto popup-toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="filter"><span class="me-2"><img src="~/assets/img/icons/filter-icon.svg" alt="filter"></span>Filter </a>
                         </li>
-                        
+
                         <li>
                             <div class="dropdown dropdown-action" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="download">
                                 <a href="#" class="btn-filters" data-bs-toggle="dropdown" aria-expanded="false"><span><i class="fe fe-download"></i></span></a>
@@ -43,95 +51,25 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-sm-12">
-                <div class=" card-table">
+                <div class="card">
+
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-center table-hover datatable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>SNO.</th>
-                                        <th>Device Type</th>
-                                        
-                                        <th class="no-sort">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Lenovo 3rd Generation</td>
-                                        
-                                        <td class="d-flex align-items-center">
+                        <div class="table-responsive" id="tb">
 
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory"><i class="far fa-edit me-2"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Lenovo 3rd Generation</td>
 
-                                        <td class="d-flex align-items-center">
-                                          
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory"><i class="far fa-edit me-2"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Lenovo 3rd Generation</td>
-
-                                        <td class="d-flex align-items-center">
-
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory"><i class="far fa-edit me-2"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                  
-                            </table>
+                            @await Html.PartialAsync("_DeviceTablePartial", Model)
+                                
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+
 
 
 <div class="toggle-sidebar">
@@ -327,7 +265,7 @@
 
 
 
-#<!-- #region Add stock -->
+<!-- #region Add stock -->
 
 <div class="modal custom-modal fade" id="add_inventory" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -344,8 +282,8 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
                             <div class="input-block mb-3">
-                                <label asp-for="DeviceName"></label>
-                                <input type="text" asp-for="DeviceName" class="form-control" placeholder="Device Type Name">
+                                <label asp-for="@_model.DeviceName"></label>
+                                <input type="text" asp-for="@_model.DeviceName" class="form-control" placeholder="Device Type Name">
                             </div>
                         </div>
 
@@ -392,25 +330,41 @@
 
 
 
+
 <script>
-    $(document).ready(function () {
-        // jQuery validation
-        $("#myForm").validate({
-            submitHandler: function (form) {
-                // AJAX form submission
-                var formData = $(form).serialize();
-                $.ajax({
-                    url: '/Home/SubmitForm', // URL to send the data to
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        alert('Form submitted successfully!');
-                    },
-                    error: function (error) {
-                        alert('An error occurred: ' + error.responseText);
-                    }
-                });
+    function ChangePage(e, t) {
+        var data = {
+            pageNo: t
+        };
+        $.ajax({
+            url: '@Url.Action(indexModel.ActionName, indexModel.ControllerName)', // Corrected Razor syntax for URL
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#tb').html(response);
+            },
+            error: function (error) {
+                alert('An error occurred: ' + error.responseText);
             }
         });
-    });
+    }
+    function CallSort(e,t, a) {
+        debugger;
+        var data = {
+            cols: t,
+            order: a
+        };
+
+        $.ajax({
+            url: '@Url.Action(indexModel.ActionName, indexModel.ControllerName)', // Corrected Razor syntax for URL
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#tb').html(response);
+            },
+            error: function (error) {
+                alert('An error occurred: ' + error.responseText);
+            }
+        });
+    }
 </script>
