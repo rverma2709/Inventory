@@ -18,4 +18,17 @@ namespace Root.Models.StoredProcedures
         public string DeviceName { get; set; }
        
     }
+
+    [StoredProcedureName("GetDeviceModeldetails")]
+    public class SFGetDeviceModeldetails : SFParameters
+    {
+        public SFGetDeviceModeldetails()
+        {
+            cols = "DeviceTypeId";
+            order = "DESC";
+        }
+        [QueryParam]
+        public string ModelName { get; set; }
+
+    }
 }
