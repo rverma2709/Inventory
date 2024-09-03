@@ -10,7 +10,14 @@ namespace App.AdminPortalServices.Models
     public class AppConfig : CommonAppConfig
     {
         public CookieConfig CookieConfigs { get; set; } = new CookieConfig();
+        public RedisConfig RedisConfig { get; set; } = new RedisConfig();
     }
+    public class RedisConfig
+    {
+        public string RedisConnectionString { get; set; }
+        public bool IsEncConnectionString { get; set; }
+    }
+
     public class CookieConfig
     {
         public string Key { get; set; }

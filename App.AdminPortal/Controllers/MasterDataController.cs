@@ -19,9 +19,15 @@ namespace App.AdminPortal.Controllers
         {
             _DeviceType = DeviceType;
         }
+        public async Task FormInitialise()
+        {
+            ViewBag.DeviceType = (await _staticService._cacheRepo.DeviceTypeList());
+           
+        }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceMaster(SFGetDeviceType sFGetDevice)
         {
+           
             List<DeviceType> deviceTypes = new List<DeviceType>();
            
             try
@@ -51,17 +57,31 @@ namespace App.AdminPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDeviceMaster(DeviceTypeData deviceType)
         {
-            DeviceType device = new DeviceType() { 
-              DeviceName = deviceType.DeviceName
-            };
+            try
+            {
+                DeviceType device = new DeviceType()
+                {
+                    DeviceName = deviceType.DeviceName
+                };
 
-            await _DeviceType.Create(device);
-            await _DeviceType.Save();
-            HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+                await _DeviceType.Create(device);
+                await _DeviceType.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Something Error");
+            }
+           
             return RedirectToAction("DeviceMaster", "MasterData");
         }
-
-
+        [HttpPost]
+        public async Task<IActionResult> RemoveDeviceMaster(RequestById requestById)
+        {
+           
+            return RedirectToAction("DeviceMaster", "MasterData");
+        }
 
     }
 }

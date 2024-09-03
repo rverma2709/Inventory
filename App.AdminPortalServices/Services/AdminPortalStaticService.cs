@@ -36,7 +36,7 @@ namespace App.AdminPortalServices.Services
             IHttpContextAccessor httpContextAccessor,
             ILogService logService,
             ICommonService commonService,
-       // ICacheService cacheService,
+            ICacheService cacheService,
 
             CacheUOM cacheRepo,
              IDataService<DBEntities, SMSLog> smsLogService,
@@ -50,7 +50,7 @@ namespace App.AdminPortalServices.Services
                 configuration,
                 logService,
                 commonService,
-                //cacheService,
+                cacheService,
                 cacheRepo,
                 smsLogService,
                 httpContextAccessor,

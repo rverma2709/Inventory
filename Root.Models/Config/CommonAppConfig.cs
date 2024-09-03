@@ -9,6 +9,15 @@
         public EmailConfigs emailConfigs { get; set; } = new EmailConfigs();
         public UploadingConfigs uploadingConfigs { get; set; } = new UploadingConfigs();
         public SessionConfigs sessionConfigs { get; set; } = new SessionConfigs();
+        public List<ChannelConfig> ChannelConfig { get; set; } = new List<ChannelConfig>();
+    }
+    public class ChannelConfig
+    {
+        public string ChannelID { get; set; }
+        public int SlidingExpiry { get; set; }
+        public bool CanRead { get; set; }
+        public bool CanWrite { get; set; }
+        public bool CanDelete { get; set; }
     }
     public class SessionConfigs
     {
@@ -59,12 +68,5 @@
         public bool StoreLogs { get; set; }
 
     }
-    public class ChannelConfig
-    {
-        public string ChannelID { get; set; }
-        public int SlidingExpiry { get; set; }
-        public bool CanRead { get; set; }
-        public bool CanWrite { get; set; }
-        public bool CanDelete { get; set; }
-    }
+   
 }

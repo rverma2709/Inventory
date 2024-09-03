@@ -9,6 +9,7 @@ using Root.Services.Common;
 using Root.Services.DBContext;
 using Root.Services.Interfaces;
 using Root.Services.Services;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager Configuration = builder.Configuration;
@@ -35,7 +36,7 @@ builder.Services.AddScoped<AdminPortalStaticService>();
 //builder.Services.AddScoped<ApplicantStaticService>();
 builder.Services.AddTransient<ILogService, LogService>();
 builder.Services.AddScoped(typeof(IDataService<,>), typeof(DataService<,>));
-//builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<CacheUOM>();
 //builder.Services.AddTransient<ICSCService, CSCService>();
 builder.Services.AddTransient<IViewRenderService, ViewRenderService>();
@@ -47,6 +48,20 @@ builder.Services.AddTransient<IViewRenderService, ViewRenderService>();
 //builder.Services.AddTransient<IScanApplicationsService, ScanApplicationsService>();
 //builder.Services.AddTransient<IAadhaarService, AadhaarService>();
 //builder.Services.AddTransient<IGPActivationService, GPActivationService>();
+string RedisConnectionString = string.Empty;
+if (myConfig.RedisConfig.IsEncConnectionString)
+{
+    RedisConnectionString = CommonLib.GetRedisPlainConnectionString(myConfig.RedisConfig.RedisConnectionString);
+}
+else
+{
+    RedisConnectionString = myConfig.RedisConfig.RedisConnectionString;
+}
+ConfigurationOptions configurationOption = ConfigurationOptions.Parse(RedisConnectionString);
+configurationOption.ClientName = myConfig.tokenConfigs.ChannelId;
+CacheService.configurationOption = configurationOption;
+CacheService.channelConfigs = myConfig.ChannelConfig;
+CacheService.parentChannelID = CacheService.parentChannelID = (CacheChannels)Enum.Parse(typeof(CacheChannels), myConfig.tokenConfigs.ChannelId, true);
 string ChannelID = myConfig.tokenConfigs.ChannelId;
 builder.Services.AddSession(options =>
 {

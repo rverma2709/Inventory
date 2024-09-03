@@ -182,7 +182,7 @@
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a href="#" class="btn btn-primary paid-continue-btn">Delete</a>
+                            <a  class="btn btn-primary paid-continue-btn" onclick="ConformationDeviceId()">Delete</a>
                         </div>
                         <div class="col-6">
                             <a href="#" data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn">Cancel</a>
@@ -198,6 +198,7 @@
 
 
 <script>
+    var DeviceId = 0;
     function ChangePage(e, t) {
         var data = {
             pageNo: t
@@ -249,5 +250,29 @@
                 alert('An error occurred: ' + error.responseText);
             }
         });
+    }
+    function RemoveDeviceType(id) {
+        
+        DeviceId = id
+       
+    }
+    function ConformationDeviceId() {
+        alert(DeviceId);//add_inventory
+        $('#delete_stock').modal('hide');
+       // $('#add_inventory').modal('show');
+        // var data = {
+        //     id: DeviceId
+        // };
+        // $.ajax({
+        //     url: '@Url.Action("RemoveDeviceMaster", "MasterData")', // Corrected Razor syntax for URL
+        //     type: 'POST',
+        //     data: data,
+        //     success: function (response) {
+        //         $('#tb').html(response);
+        //     },
+        //     error: function (error) {
+        //         alert('An error occurred: ' + error.responseText);
+        //     }
+        // });
     }
 </script>

@@ -27,7 +27,7 @@ namespace Root.Services.Services
         public string ModelName { get; set; }
         protected readonly ILogService _logService;
         protected readonly ICommonService _commonService;
-        //public readonly ICacheService _cacheService;
+        public readonly ICacheService _cacheService;
         public readonly CacheUOM _cacheRepo;
         public readonly CommonAppConfig _appConfig;
         protected readonly IHttpContextAccessor _httpContextAccessor;
@@ -40,7 +40,7 @@ namespace Root.Services.Services
             IConfiguration configuration,
             ILogService logService,
             ICommonService commonService,
-            //ICacheService cacheService,
+            ICacheService cacheService,
             CacheUOM cacheRepo,
             IDataService<DBEntities, SMSLog> smsLogService,
             IHttpContextAccessor httpContextAccessor,
@@ -50,7 +50,7 @@ namespace Root.Services.Services
             _appConfig = CommonLib.GetAppConfig<CommonAppConfig>(configuration);
             _logService = logService;
             _commonService = commonService;
-           // _cacheService = cacheService;
+            _cacheService = cacheService;
             _cacheRepo = cacheRepo;
             _httpContextAccessor = httpContextAccessor;
             _viewRenderService = viewRenderService;
