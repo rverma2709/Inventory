@@ -1,6 +1,6 @@
-﻿@model Tuple<List<Root.Models.Tables.BrandDetail>, Root.Models.StoredProcedures.SFGetBrandDetails>
+﻿@model Tuple<List<Root.Models.Tables.GenerationDetail>, Root.Models.StoredProcedures.SFGetGenerationDetails>
 @{
-    Root.Models.Tables.BrandDetail _model = new Root.Models.Tables.BrandDetail();
+    Root.Models.Tables.GenerationDetail _model = new Root.Models.Tables.GenerationDetail();
     
 }
 <table class="table table-center table-hover">
@@ -17,8 +17,8 @@
 
             </th>
             <th>
-                <span @Html.Raw(CommonLib.GetSortingClass("BrandName", Model.Item2.cols, Model.Item2.order))>
-                    @Html.DisplayNameFor(m => _model.BrandName)
+                <span @Html.Raw(CommonLib.GetSortingClass("GenerationName", Model.Item2.cols, Model.Item2.order))>
+                    @Html.DisplayNameFor(m => _model.GenerationName)
                 </span>
 
 
@@ -57,8 +57,8 @@
                 <td data-label="@Html.DisplayNameFor(m => _model.DeviceType.DeviceName) : ">
                     @Html.DisplayFor(modelItem => item.DeviceType.DeviceName)
                 </td>
-                <td data-label="@Html.DisplayNameFor(m => _model.BrandName) : ">
-                    @Html.DisplayFor(modelItem => item.BrandName)
+                <td data-label="@Html.DisplayNameFor(m => _model.GenerationName) : ">
+                    @Html.DisplayFor(modelItem => item.GenerationName)
                 </td>
 
                 <td class="d-flex align-items-center">
@@ -71,7 +71,7 @@
                                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory"><i class="far fa-edit me-2"></i>Edit</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock" onclick="RemoveDeviceType(@item.DeviceTypeId)"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock" onclick="RemoveDeviceType(@item.GenerationDetailId)"><i class="far fa-trash-alt me-2"></i>Delete</a>
                                 </li>
                             </ul>
                         </div>

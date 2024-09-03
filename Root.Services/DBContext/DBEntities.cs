@@ -28,5 +28,10 @@ namespace Root.Services.DBContext
         public DbSet<InventoryUser> InventoryUsers { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<BrandDetail> BrandDetails {  get; set; }
+        public DbSet<DeviceProcessorDetail> DeviceProcessorDetails { get; set; }
+        public DbSet<GenerationDetail> GenerationDetails { get; set; }
+        public DbSet<RAMDetail> RAMDetails { get; set; }
+        public DbSet<HardDiskDetail> HardDiskDetails { get; set; }
+        public DbSet<ProcurementType> ProcurementTypes { get; set; }
     }
 }

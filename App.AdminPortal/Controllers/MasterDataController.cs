@@ -17,10 +17,20 @@ namespace App.AdminPortal.Controllers
     {
         private readonly IDataService<DBEntities, DeviceType> _DeviceType;
         private readonly IDataService<DBEntities, BrandDetail> _BrandDetail;
-        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType, IDataService<DBEntities, BrandDetail> brandDetail) : base(staticService, httpContextAccessor, "Device Master")
+        private readonly IDataService<DBEntities, DeviceProcessorDetail> _DeviceProcessorDetail;
+        private readonly IDataService<DBEntities, GenerationDetail> _GenerationDetail;
+        private readonly IDataService<DBEntities, RAMDetail> _RAMDetail;
+        private readonly IDataService<DBEntities, HardDiskDetail> _HardDiskDetail;
+        private readonly IDataService<DBEntities, ProcurementType> _ProcurementType;
+        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType, IDataService<DBEntities, BrandDetail> brandDetail, IDataService<DBEntities, DeviceProcessorDetail> deviceProcessorDetail, IDataService<DBEntities, GenerationDetail> generationDetail, IDataService<DBEntities, RAMDetail> rAMDetail, IDataService<DBEntities, HardDiskDetail> hardDiskDetail, IDataService<DBEntities, ProcurementType> procurementType) : base(staticService, httpContextAccessor, "Device Master")
         {
             _DeviceType = DeviceType;
             _BrandDetail = brandDetail;
+            _DeviceProcessorDetail = deviceProcessorDetail;
+            _GenerationDetail = generationDetail;
+            _RAMDetail = rAMDetail;
+            _HardDiskDetail = hardDiskDetail;
+            _ProcurementType = procurementType;
         }
         public async Task FormInitialise()
         {
@@ -112,9 +122,159 @@ namespace App.AdminPortal.Controllers
             }
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
             {
-                return PartialView("_DeviceTablePartial", Tuple.Create(brandDetails, sFGetBrandDetails));
+                return PartialView("_BrandDetailTablePartial", Tuple.Create(brandDetails, sFGetBrandDetails));
             }
             return View(Tuple.Create(brandDetails, sFGetBrandDetails));
+        }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> DeviceProcessorDetails(SFGetDeviceProcessorDetails sFGetDeviceProcessorDetails)
+        {
+            ViewBag.PageModelName = "Device Processor Details";
+            List<DeviceProcessorDetail> deviceProcessorDetails = new List<DeviceProcessorDetail>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<DeviceProcessorDetail>(_DeviceProcessorDetail, sFGetDeviceProcessorDetails, new Expression<Func<DeviceProcessorDetail, object>>[] { a => a.DeviceType });
+                if (result.Status.IsSuccess)
+                {
+                    deviceProcessorDetails = await FetchList<DeviceProcessorDetail>(result, sFGetDeviceProcessorDetails);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_DeviceProcessorTable", Tuple.Create(deviceProcessorDetails, sFGetDeviceProcessorDetails));
+            }
+            return View(Tuple.Create(deviceProcessorDetails, sFGetDeviceProcessorDetails));
+        }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> GenerationDetails(SFGetGenerationDetails sFGetGenerationDetails)
+        {
+            ViewBag.PageModelName = "Generation Details";
+            List<GenerationDetail> generationDetails = new List<GenerationDetail>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<GenerationDetail>(_GenerationDetail, sFGetGenerationDetails, new Expression<Func<GenerationDetail, object>>[] { a => a.DeviceType });
+                if (result.Status.IsSuccess)
+                {
+                    generationDetails = await FetchList<GenerationDetail>(result, sFGetGenerationDetails);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_GenerationTable", Tuple.Create(generationDetails, sFGetGenerationDetails));
+            }
+            return View(Tuple.Create(generationDetails, sFGetGenerationDetails));
+        }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> RAMDetails(SFGetRAMDetails sFGetRAMDetails)
+        {
+            ViewBag.PageModelName = "RAM Details";
+            List<RAMDetail> rAMDetails = new List<RAMDetail>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<RAMDetail>(_RAMDetail, sFGetRAMDetails, new Expression<Func<RAMDetail, object>>[] { a => a.DeviceType });
+                if (result.Status.IsSuccess)
+                {
+                    rAMDetails = await FetchList<RAMDetail>(result, sFGetRAMDetails);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_GenerationTable", Tuple.Create(rAMDetails, sFGetRAMDetails));
+            }
+            return View(Tuple.Create(rAMDetails, sFGetRAMDetails));
+        }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> HardDiskDetails(SFGetHardDiskDetails sFGetHardDiskDetails)
+        {
+            ViewBag.PageModelName = "HardDisk Details";
+            List<HardDiskDetail> hardDiskDetails = new List<HardDiskDetail>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<HardDiskDetail>(_HardDiskDetail, sFGetHardDiskDetails, new Expression<Func<HardDiskDetail, object>>[] { a => a.DeviceType });
+                if (result.Status.IsSuccess)
+                {
+                    hardDiskDetails = await FetchList<HardDiskDetail>(result, sFGetHardDiskDetails);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_HardDiskTable", Tuple.Create(hardDiskDetails, sFGetHardDiskDetails));
+            }
+            return View(Tuple.Create(hardDiskDetails, sFGetHardDiskDetails));
+        }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> ProcurementTypes(SFGetProcurementType sFGetProcurementType)
+        {
+            ViewBag.PageModelName = "Procurement Types";
+            List<ProcurementType> procurementTypes = new List<ProcurementType>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<ProcurementType>(_ProcurementType, sFGetProcurementType);
+                if (result.Status.IsSuccess)
+                {
+                    procurementTypes = await FetchList<ProcurementType>(result, sFGetProcurementType);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_ProcurementTypesPartial", Tuple.Create(procurementTypes, sFGetProcurementType));
+            }
+            return View(Tuple.Create(procurementTypes, sFGetProcurementType));
         }
 
 
