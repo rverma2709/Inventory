@@ -9,15 +9,18 @@ using Root.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Root.Models.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Linq.Expressions;
 
 namespace App.AdminPortal.Controllers
 {
     public class MasterDataController : AdminPortalController
     {
         private readonly IDataService<DBEntities, DeviceType> _DeviceType;
-        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType) : base(staticService, httpContextAccessor, "Device Master")
+        private readonly IDataService<DBEntities, BrandDetail> _BrandDetail;
+        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType, IDataService<DBEntities, BrandDetail> brandDetail) : base(staticService, httpContextAccessor, "Device Master")
         {
             _DeviceType = DeviceType;
+            _BrandDetail = brandDetail;
         }
         public async Task FormInitialise()
         {
@@ -27,7 +30,7 @@ namespace App.AdminPortal.Controllers
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceMaster(SFGetDeviceType sFGetDevice)
         {
-           
+            
             List<DeviceType> deviceTypes = new List<DeviceType>();
            
             try
@@ -66,6 +69,7 @@ namespace App.AdminPortal.Controllers
 
                 await _DeviceType.Create(device);
                 await _DeviceType.Save();
+                ViewBag.DeviceType = (await _staticService._cacheRepo.DeviceTypeList(true));
                 HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
             }
             catch (Exception ex)
@@ -82,6 +86,37 @@ namespace App.AdminPortal.Controllers
            
             return RedirectToAction("DeviceMaster", "MasterData");
         }
+
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        public async Task<IActionResult> BrandDetails(SFGetBrandDetails sFGetBrandDetails)
+        {
+            ViewBag.PageModelName = "Brand Details";
+            List<BrandDetail> brandDetails = new List<BrandDetail>();
+
+            try
+            {
+                ResJsonOutput result = await _staticService.FetchList<BrandDetail>(_BrandDetail, sFGetBrandDetails, new Expression<Func<BrandDetail, object>>[] { a=>a.DeviceType});
+                if (result.Status.IsSuccess)
+                {
+                    brandDetails = await FetchList<BrandDetail>(result, sFGetBrandDetails);
+
+                }
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, result.Status.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+            }
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest") // Check for AJAX requests
+            {
+                return PartialView("_DeviceTablePartial", Tuple.Create(brandDetails, sFGetBrandDetails));
+            }
+            return View(Tuple.Create(brandDetails, sFGetBrandDetails));
+        }
+
 
     }
 }
