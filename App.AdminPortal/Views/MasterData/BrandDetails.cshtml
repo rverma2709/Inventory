@@ -138,12 +138,12 @@
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
                 <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="mb-0">Add Device Type</h4>
+                    <h4 class="mb-0">Add Brand Name</h4>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="AddDeviceMaster" asp-controller="MasterData" method="post">
+            <form asp-action="AddBrandDetails" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
                        
@@ -162,7 +162,7 @@
 
                             <div class="input-block mb-3">
                                 <label asp-for="@_model.BrandName"></label>
-                                <input type="text" name="DeviceName" class="form-control" placeholder="Device Type Name">
+                                <input type="text" name="BrandName" class="form-control" placeholder="Device Type Name">
                             </div>
                         </div>
 

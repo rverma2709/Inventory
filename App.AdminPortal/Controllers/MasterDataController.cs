@@ -131,6 +131,32 @@ namespace App.AdminPortal.Controllers
             }
             return View(Tuple.Create(brandDetails, sFGetBrandDetails));
         }
+        [HttpPost]
+        public async Task<IActionResult> AddBrandDetails(ViewBrandDetail  viewBrandDetail)
+        {
+            try
+            {
+                BrandDetail brandDetail = new BrandDetail()
+                {
+                    DeviceTypeId = (long)viewBrandDetail.DeviceTypeId,
+                    BrandName = viewBrandDetail.BrandName,
+
+
+                };
+
+                await _BrandDetail.Create(brandDetail);
+                await _BrandDetail.Save();
+               // ViewBag.DeviceType = (await _staticService._cacheRepo.DeviceTypeList(true));
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Something Error");
+            }
+
+            return RedirectToAction("BrandDetails", "MasterData");
+        }
 
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceProcessorDetails(SFGetDeviceProcessorDetails sFGetDeviceProcessorDetails)
