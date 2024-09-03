@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Root.Models.Tables
 {
@@ -11,5 +12,9 @@ namespace Root.Models.Tables
 
         [DisplayName("Device Model Name")]
         public string? ModelName { get; set; }
+
+        [ForeignKey("DeviceTypeId")]
+        public virtual DeviceType? DeviceType { get; set; }
+
     }
 }

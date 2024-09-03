@@ -9,6 +9,7 @@ using Root.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Root.Models.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Linq.Expressions;
 
 namespace App.AdminPortal.Controllers
 {
@@ -77,7 +78,7 @@ namespace App.AdminPortal.Controllers
             try
             {
                 ViewBag.PageModelName = "Device Model Master";
-                ResJsonOutput result = await _staticService.FetchList<DeviceModeldetail>(_DeviceModeldetail, sFGetDeviceModel);
+                ResJsonOutput result = await _staticService.FetchList<DeviceModeldetail>(_DeviceModeldetail, sFGetDeviceModel, new Expression<Func<DeviceModeldetail, object>>[] { a => a.DeviceType});
                 if (result.Status.IsSuccess)
                 {
                     deviceModeldetail = await FetchList<DeviceModeldetail>(result, sFGetDeviceModel);
