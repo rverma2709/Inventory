@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Root.Models.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.AdminPortal.Controllers
 {
@@ -34,8 +35,11 @@ namespace App.AdminPortal.Controllers
         }
         public async Task FormInitialise()
         {
-            ViewBag.DeviceType = (await _staticService._cacheRepo.DeviceTypeList());
-           
+            List<DeviceType> deviceTypes = (await _staticService._cacheRepo.DeviceTypeList());
+            ViewBag.DeviceType = (deviceTypes.Select(x => new { x.DeviceTypeId, x.DeviceName }).ToList());
+
+          
+
         }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceMaster(SFGetDeviceType sFGetDevice)
@@ -100,6 +104,7 @@ namespace App.AdminPortal.Controllers
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> BrandDetails(SFGetBrandDetails sFGetBrandDetails)
         {
+           await FormInitialise();
             ViewBag.PageModelName = "Brand Details";
             List<BrandDetail> brandDetails = new List<BrandDetail>();
 

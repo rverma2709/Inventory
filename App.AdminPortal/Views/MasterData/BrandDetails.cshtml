@@ -1,7 +1,7 @@
 ﻿@* @model Root.Models.ViewModels.DeviceTypeData *@
 @model Tuple<List<Root.Models.Tables.BrandDetail>, Root.Models.StoredProcedures.SFGetBrandDetails>
 @{
-    Root.Models.Tables.DeviceType _model = new Root.Models.Tables.DeviceType();
+    Root.Models.Tables.BrandDetail _model = new Root.Models.Tables.BrandDetail();
     IndexModel indexModel = new IndexModel();
     indexModel.ControllerName = "MasterData";
     indexModel.ActionName = "BrandDetails";
@@ -98,7 +98,7 @@
                                         <div class="form-custom">
                                             <input type="text" class="form-control" asp-for="Item2.BrandName" placeholder="Search Device Name">
 
-
+                                            
                                         </div>
 
                                     </div>
@@ -146,9 +146,22 @@
             <form asp-action="AddDeviceMaster" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
+                       
                         <div class="col-lg-6 col-md-12">
+
                             <div class="input-block mb-3">
-                                <label asp-for="@_model.DeviceName"></label>
+                                <label asp-for="@_model.DeviceType.DeviceName"></label>
+                               
+                                <select class="select" asp-items="@(new SelectList(ViewBag.DeviceType, "DeviceTypeId", "DeviceName"))" name="DeviceTypeId">
+                                    <option>Select Value</option>
+                                </select>
+                              
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+
+                            <div class="input-block mb-3">
+                                <label asp-for="@_model.BrandName"></label>
                                 <input type="text" name="DeviceName" class="form-control" placeholder="Device Type Name">
                             </div>
                         </div>
