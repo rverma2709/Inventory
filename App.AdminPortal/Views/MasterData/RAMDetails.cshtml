@@ -142,21 +142,34 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="AddDeviceMaster" asp-controller="MasterData" method="post">
+            <form asp-action="AddRAMDetails" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
                             <div class="input-block mb-3">
-                                <label asp-for="@_model.RAMSize"></label>
-                                <input type="text" name="DeviceName" class="form-control" placeholder="Device Type Name">
+                                <label asp-for="@_model.CompanyName"></label>
+                                <input type="text" name="RAMSize" class="form-control" placeholder="Company Name">
                             </div>
                         </div>
-
+                        <div class="col-lg-6 col-md-12">
+                            <div class="input-block mb-3">
+                                <label asp-for="@_model.RAMSize"></label>
+                                <input type="text" name="RAMSize" class="form-control" placeholder="RAM Size">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="input-block mb-3">
+                                <label asp-for="@_model.DeviceType.DeviceName"></label>
+                                <select class="select" asp-items="@(new SelectList(ViewBag.DeviceType, "DeviceTypeId", "DeviceName"))" name="DeviceTypeId">
+                                    <option>Select Value</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-back cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">ADD</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">Add</button>
                 </div>
             </form>
         </div>

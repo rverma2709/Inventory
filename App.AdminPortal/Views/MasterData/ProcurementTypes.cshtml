@@ -142,13 +142,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="AddDeviceMaster" asp-controller="MasterData" method="post">
+            <form asp-action="AddProcurementTypes" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
                             <div class="input-block mb-3">
                                 <label asp-for="@_model.ProcurementNameType"></label>
-                                <input type="text" name="DeviceName" class="form-control" placeholder="Device Type Name">
+                                <input type="text" name="ProcurementNameType" class="form-control" placeholder="Procurement Name Type">
                             </div>
                         </div>
 
@@ -156,7 +156,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-back cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">ADD</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">Add</button>
                 </div>
             </form>
         </div>

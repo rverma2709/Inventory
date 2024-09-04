@@ -11,6 +11,7 @@ using Root.Models.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml.DataValidation.Formulas.Contracts;
 
 namespace App.AdminPortal.Controllers
 {
@@ -214,11 +215,11 @@ namespace App.AdminPortal.Controllers
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceProcessorDetails(SFGetDeviceProcessorDetails sFGetDeviceProcessorDetails)
         {
-            ViewBag.PageModelName = "Device Processor Details";
             List<DeviceProcessorDetail> deviceProcessorDetails = new List<DeviceProcessorDetail>();
-
             try
             {
+                await FormInitialise();
+                ViewBag.PageModelName = "Device Processor Details";
                 ResJsonOutput result = await _staticService.FetchList<DeviceProcessorDetail>(_DeviceProcessorDetail, sFGetDeviceProcessorDetails, new Expression<Func<DeviceProcessorDetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
@@ -240,15 +241,39 @@ namespace App.AdminPortal.Controllers
             }
             return View(Tuple.Create(deviceProcessorDetails, sFGetDeviceProcessorDetails));
         }
+        [HttpPost]
+        public async Task<IActionResult> AddDeviceProcessorDetails(ViewProcessorDetail viewProcessorDetail)
+        {
+            try
+            {
+                DeviceProcessorDetail deviceProcessorDetail = new DeviceProcessorDetail()
+                {
+                    DeviceTypeId = (long)viewProcessorDetail.DeviceTypeId,
+                    DeviceProcessorName = viewProcessorDetail.DeviceProcessorName,
+                    ProcessorCompanyName = viewProcessorDetail.ProcessorCompanyName,
+                };
+
+                await _DeviceProcessorDetail.Create(deviceProcessorDetail);
+                await _DeviceProcessorDetail.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Add device procesor details should not be blank Error");
+            }
+
+            return RedirectToAction("DeviceProcessorDetails", "MasterData");
+        }
 
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> GenerationDetails(SFGetGenerationDetails sFGetGenerationDetails)
         {
-            ViewBag.PageModelName = "Generation Details";
             List<GenerationDetail> generationDetails = new List<GenerationDetail>();
-
             try
             {
+                await FormInitialise();
+                ViewBag.PageModelName = "Generation Details";
                 ResJsonOutput result = await _staticService.FetchList<GenerationDetail>(_GenerationDetail, sFGetGenerationDetails, new Expression<Func<GenerationDetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
@@ -271,6 +296,29 @@ namespace App.AdminPortal.Controllers
             return View(Tuple.Create(generationDetails, sFGetGenerationDetails));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddGenerationDetails(ViewGenerationDetails viewGenerationDetails)
+        {
+            try
+            {
+                GenerationDetail generationDetail = new GenerationDetail()
+                {
+                    DeviceTypeId = (long)viewGenerationDetails.DeviceTypeId,
+                    GenerationName = viewGenerationDetails.GenerationName
+                };
+
+                await _GenerationDetail.Create(generationDetail);
+                await _GenerationDetail.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Generation add details should not be blank Error");
+            }
+
+            return RedirectToAction("GenerationDetails", "MasterData");
+        }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> RAMDetails(SFGetRAMDetails sFGetRAMDetails)
         {
@@ -279,6 +327,7 @@ namespace App.AdminPortal.Controllers
 
             try
             {
+                await FormInitialise();
                 ResJsonOutput result = await _staticService.FetchList<RAMDetail>(_RAMDetail, sFGetRAMDetails, new Expression<Func<RAMDetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
@@ -301,6 +350,31 @@ namespace App.AdminPortal.Controllers
             return View(Tuple.Create(rAMDetails, sFGetRAMDetails));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddRAMDetails(ViewRAMDetails viewRAMDetails)
+        {
+            try
+            {
+                RAMDetail rAMDetail = new RAMDetail()
+                {
+                    DeviceTypeId = (long)viewRAMDetails.DeviceTypeId,
+                    CompanyName = viewRAMDetails.CompanyName,
+                    RAMSize = viewRAMDetails.RAMSize,
+                };
+
+                await _RAMDetail.Create(rAMDetail);
+                await _RAMDetail.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "RAM add details should not be blank Error");
+            }
+
+            return RedirectToAction("RAMDetails", "MasterData");
+        }
+
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> HardDiskDetails(SFGetHardDiskDetails sFGetHardDiskDetails)
         {
@@ -309,6 +383,7 @@ namespace App.AdminPortal.Controllers
 
             try
             {
+                await FormInitialise();
                 ResJsonOutput result = await _staticService.FetchList<HardDiskDetail>(_HardDiskDetail, sFGetHardDiskDetails, new Expression<Func<HardDiskDetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
@@ -329,6 +404,31 @@ namespace App.AdminPortal.Controllers
                 return PartialView("_HardDiskTable", Tuple.Create(hardDiskDetails, sFGetHardDiskDetails));
             }
             return View(Tuple.Create(hardDiskDetails, sFGetHardDiskDetails));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddHardDiskDetails(ViewHardDiskDetails viewHardDiskDetails)
+        {
+            try
+            {
+                HardDiskDetail hardDiskDetail = new HardDiskDetail()
+                {
+                    DeviceTypeId = (long)viewHardDiskDetails.DeviceTypeId,
+                    HardDiskCompanyName = viewHardDiskDetails.HardDiskCompanyName,
+                    HardDiskSize = viewHardDiskDetails.HardDiskSize,
+                    HardDiskType = viewHardDiskDetails.HardDiskType,
+                };
+
+                await _HardDiskDetail.Create(hardDiskDetail);
+                await _HardDiskDetail.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Hard-Disk add details should not be blank Error");
+            }
+
+            return RedirectToAction("HardDiskDetails", "MasterData");
         }
 
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
@@ -361,6 +461,28 @@ namespace App.AdminPortal.Controllers
             return View(Tuple.Create(procurementTypes, sFGetProcurementType));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddProcurementTypes(ViewProcurementType viewProcurementType)
+        {
+            try
+            {
+                ProcurementType procurementType = new ProcurementType()
+                {
+                    ProcurementNameType = viewProcurementType.ProcurementNameType,
+                };
+
+                await _ProcurementType.Create(procurementType);
+                await _ProcurementType.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Procurement add details should not be blank Error");
+            }
+
+            return RedirectToAction("ProcurementTypes", "MasterData");
+        }
 
     }
 }
