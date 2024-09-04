@@ -27,6 +27,7 @@ namespace Root.Services.DBContext
     
         public DbSet<InventoryUser> InventoryUsers { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
+        public DbSet<DeviceModeldetail> DeviceModeldetails { get; set; }
         public DbSet<BrandDetail> BrandDetails {  get; set; }
         public DbSet<DeviceProcessorDetail> DeviceProcessorDetails { get; set; }
         public DbSet<GenerationDetail> GenerationDetails { get; set; }
