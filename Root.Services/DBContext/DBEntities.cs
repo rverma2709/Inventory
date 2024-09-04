@@ -33,5 +33,6 @@ namespace Root.Services.DBContext
         public DbSet<RAMDetail> RAMDetails { get; set; }
         public DbSet<HardDiskDetail> HardDiskDetails { get; set; }
         public DbSet<ProcurementType> ProcurementTypes { get; set; }
+        public DbSet<VendorDetail> VendorDetails { get; set; }
     }
 }

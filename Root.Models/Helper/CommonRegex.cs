@@ -43,6 +43,9 @@ namespace Root.Models.Helper
         public const string EmailIDFormat = @"^\s*(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*\s*$";
         public const string EmailIDFormatErr = @"The {0} field must be valid.";
 
+        public const string GSTNoFormate = @"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+        public const string GSTNoFormateErr = @"The {0} field must be valid.";
+
         public const string AppVersionFormat = @"^([1-9](\d)*)(\.\d+)?(\.\d+)?(\.\d+)?$";
         public const string AppVersionFormatErr = @"The {0} field should be in valid format(i.e. X.X.X.X).";
 

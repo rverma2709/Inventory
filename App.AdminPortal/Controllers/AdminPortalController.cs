@@ -215,7 +215,21 @@ namespace App.AdminPortal.Controllers
                         };
         }
 
-      
+        #region  Model Validate
+        public  Tuple<bool, string> ValidateModel<T>(T model) where T : class
+        {
+            string errorMessage = string.Empty;
+            ModelState.Clear();
+            TryValidateModel(model);
+            if (!ModelState.IsValid)
+            {
+                errorMessage = GetModelStateErrors(ModelState);
+                return Tuple.Create(false, errorMessage);
+            }
+
+            return Tuple.Create(true, errorMessage);
+        }
+        #endregion
 
 
         protected T GetSession<T>(string key)

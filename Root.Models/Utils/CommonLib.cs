@@ -51,6 +51,7 @@ namespace Root.Models.Utils
     {
         public static string ServerIP { get; set; }
         public static string LogPath { get; set; }
+       
         public static string GetRedisPlainConnectionString(string connStr)
         {
             string ConnKey = connStr.Substring(0, ProgConstants.ConnKeySize);
