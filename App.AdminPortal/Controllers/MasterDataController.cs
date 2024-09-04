@@ -24,7 +24,7 @@ namespace App.AdminPortal.Controllers
         private readonly IDataService<DBEntities, RAMDetail> _RAMDetail;
         private readonly IDataService<DBEntities, HardDiskDetail> _HardDiskDetail;
         private readonly IDataService<DBEntities, ProcurementType> _ProcurementType;
-        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType,IDataService<DBEntities, DeviceModeldetail> DeviceModeldetail, IDataService<DBEntities, BrandDetail> brandDetail, IDataService<DBEntities, DeviceProcessorDetail> deviceProcessorDetail, IDataService<DBEntities, GenerationDetail> generationDetail, IDataService<DBEntities, RAMDetail> rAMDetail, IDataService<DBEntities, HardDiskDetail> hardDiskDetail, IDataService<DBEntities, ProcurementType> procurementType) : base(staticService, httpContextAccessor, "Device Master")
+        public MasterDataController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, DeviceType> DeviceType, IDataService<DBEntities, DeviceModeldetail> DeviceModeldetail, IDataService<DBEntities, BrandDetail> brandDetail, IDataService<DBEntities, DeviceProcessorDetail> deviceProcessorDetail, IDataService<DBEntities, GenerationDetail> generationDetail, IDataService<DBEntities, RAMDetail> rAMDetail, IDataService<DBEntities, HardDiskDetail> hardDiskDetail, IDataService<DBEntities, ProcurementType> procurementType) : base(staticService, httpContextAccessor, "Device Master")
         {
             _DeviceType = DeviceType;
             _DeviceModeldetail = DeviceModeldetail;
@@ -101,15 +101,16 @@ namespace App.AdminPortal.Controllers
            
             return RedirectToAction("DeviceMaster", "MasterData");
         }
-[TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
+        [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> DeviceModelMaster(SFGetDeviceModeldetails sFGetDeviceModel)
         {
             List<DeviceModeldetail> deviceModeldetail = new List<DeviceModeldetail>();
 
             try
             {
+                await FormInitialise();
                 ViewBag.PageModelName = "Device Model Master";
-                ResJsonOutput result = await _staticService.FetchList<DeviceModeldetail>(_DeviceModeldetail, sFGetDeviceModel, new Expression<Func<DeviceModeldetail, object>>[] { a => a.DeviceType});
+                ResJsonOutput result = await _staticService.FetchList<DeviceModeldetail>(_DeviceModeldetail, sFGetDeviceModel, new Expression<Func<DeviceModeldetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
                     deviceModeldetail = await FetchList<DeviceModeldetail>(result, sFGetDeviceModel);
@@ -130,29 +131,39 @@ namespace App.AdminPortal.Controllers
             }
             return View(Tuple.Create(deviceModeldetail, sFGetDeviceModel));
         }
-[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddDeviceModelMaster(DeviceModelTypeData deviceModelData)
         {
-            DeviceModeldetail deviceModels =  new DeviceModeldetail()
+            try
             {
-                ModelName = deviceModelData.ModelName
-            };
+                DeviceModeldetail deviceModels = new DeviceModeldetail()
+                {
+                    DeviceTypeId = (long)deviceModelData.DeviceTypeId,
+                    ModelName = deviceModelData.ModelName
+                };
 
-            await _DeviceModeldetail.Create(deviceModels);
-            await _DeviceModeldetail.Save();
-            HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+                await _DeviceModeldetail.Create(deviceModels);
+                await _DeviceModeldetail.Save();
+                HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
+            }
+            catch (Exception ex)
+            {
+                await CatchError(ex);
+                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Missing information while add device model Error");
+            }
+
             return RedirectToAction("DeviceModelMaster", "MasterData");
         }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> BrandDetails(SFGetBrandDetails sFGetBrandDetails)
         {
-           await FormInitialise();
+            await FormInitialise();
             ViewBag.PageModelName = "Brand Details";
             List<BrandDetail> brandDetails = new List<BrandDetail>();
 
             try
             {
-                ResJsonOutput result = await _staticService.FetchList<BrandDetail>(_BrandDetail, sFGetBrandDetails, new Expression<Func<BrandDetail, object>>[] { a=>a.DeviceType});
+                ResJsonOutput result = await _staticService.FetchList<BrandDetail>(_BrandDetail, sFGetBrandDetails, new Expression<Func<BrandDetail, object>>[] { a => a.DeviceType });
                 if (result.Status.IsSuccess)
                 {
                     brandDetails = await FetchList<BrandDetail>(result, sFGetBrandDetails);

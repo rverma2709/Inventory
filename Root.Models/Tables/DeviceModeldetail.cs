@@ -9,12 +9,14 @@ namespace Root.Models.Tables
         [Key]
         [ScaffoldColumn(false)]
         public long DeviceModeldetailId { get; set; }
+        public long DeviceTypeId { get; set; }
 
         [DisplayName("Device Model Name")]
         public string? ModelName { get; set; }
 
         [ForeignKey("DeviceTypeId")]
         public virtual DeviceType? DeviceType { get; set; }
+
 
     }
 }

@@ -146,12 +146,9 @@
             <form asp-action="AddBrandDetails" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
-                       
                         <div class="col-lg-6 col-md-12">
-
                             <div class="input-block mb-3">
                                 <label asp-for="@_model.DeviceType.DeviceName"></label>
-                               
                                 <select class="select" asp-items="@(new SelectList(ViewBag.DeviceType, "DeviceTypeId", "DeviceName"))" name="DeviceTypeId">
                                     <option>Select Value</option>
                                 </select>
@@ -159,18 +156,16 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12">
-
                             <div class="input-block mb-3">
                                 <label asp-for="@_model.BrandName"></label>
-                                <input type="text" name="BrandName" class="form-control" placeholder="Device Type Name">
+                                <input type="text" name="BrandName" class="form-control" placeholder="Device Brand Name">
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-back cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">ADD</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">Add</button>
                 </div>
             </form>
         </div>
