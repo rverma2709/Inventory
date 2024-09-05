@@ -167,6 +167,7 @@ namespace Root.Services.Services
         public async Task<List<RAMDetail>> RAMDetails(bool update = false) { return await GetValuesAsync<RAMDetail>(update, null); }
         public async Task<List<HardDiskDetail>> HardDiskDetails(bool update = false) { return await GetValuesAsync<HardDiskDetail>(update, null); }
         public async Task<List<ProcurementType>> ProcurementTypes(bool update = false) { return await GetValuesAsync<ProcurementType>(update, null); }
+        public async Task<List<VendorDetail>> VendorDetails(bool update = false) { return await GetValuesAsync<VendorDetail>(update, null); }
 
         public void Dispose()
         {

@@ -1,14 +1,29 @@
-﻿@{
+﻿@model Tuple<List<Root.Models.Tables.VendorDetail>, Root.Models.StoredProcedures.SFGetVendorDetails>
+@{
+    Root.Models.Tables.VendorDetail _model = new Root.Models.Tables.VendorDetail();
+    Root.Models.ViewModels.ViewVendorDetail _modeldata = new Root.Models.ViewModels.ViewVendorDetail();
+    IndexModel indexModel = new IndexModel();
+    indexModel.ControllerName = "VendorMaster";
+    indexModel.ActionName = "VendorDetails";
+}
+
+@{
 
     ViewBag.Title = ViewBag.PageModelName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<link href="~/css/tableheader.css" rel="stylesheet" />
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+</style>
 <div class="page-wrapper">
     <div class="content container-fluid">
 
         <div class="page-header">
             <div class="content-page-header ">
-                <h5>Vendors</h5>
+                <h5>@ViewBag.Title</h5>
                 <div class="list-btn">
                     <ul class="filter-list">
                         <li>
@@ -73,11 +88,10 @@
             <div class="col-sm-12">
                 <div class=" card-table">
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="tb">
                           
+                            @await Html.PartialAsync("_VendorDetailTable", Model)
 
-@* 
-                            //table add *@
                         </div>
                     </div>
                 </div>
@@ -100,7 +114,7 @@
                     <div class="card-header-new" id="headingOne">
                         <h6 class="filter-title">
                             <a href="javascript:void(0);" class="w-100" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Vendors
+                                Vendors Filter
                                 <span class="float-end"><i class="fa-solid fa-chevron-down"></i></span>
                             </a>
                         </h6>
@@ -111,44 +125,16 @@
                                 <div class="col-md-12">
                                     <div id="checkBoxes1">
                                         <div class="form-custom">
-                                            <input type="text" class="form-control" id="member_search1" placeholder="Search Customer">
-                                            <span><img src="assets/img/icons/search.svg" alt="img"></span>
-                                        </div>
-                                        <div class="selectBox-cont">
-                                            <label class="custom_check w-100">
-                                                <input type="checkbox" name="username">
-                                                <span class="checkmark"></span> John Smith
-                                            </label>
-                                            <label class="custom_check w-100">
-                                                <input type="checkbox" name="username">
-                                                <span class="checkmark"></span> Johnny Charles
-                                            </label>
-                                            <label class="custom_check w-100">
-                                                <input type="checkbox" name="username">
-                                                <span class="checkmark"></span> Robert George
-                                            </label>
-                                            <label class="custom_check w-100">
-                                                <input type="checkbox" name="username">
-                                                <span class="checkmark"></span> Sharonda Letha
-                                            </label>
+                                            
+                                            <input type="text" class="form-control" asp-for="Item2.VendorName" placeholder="Vendor Name">
 
-                                            <div class="view-content">
-                                                <div class="viewall-One">
-                                                    <label class="custom_check w-100">
-                                                        <input type="checkbox" name="username">
-                                                        <span class="checkmark"></span> Pricilla Maureen
-                                                    </label>
-                                                    <label class="custom_check w-100">
-                                                        <input type="checkbox" name="username">
-                                                        <span class="checkmark"></span> Randall Hollis
-                                                    </label>
-                                                </div>
-                                                <div class="view-all">
-                                                    <a href="javascript:void(0);" class="viewall-button-One"><span class="me-2">View All</span><span><i class="fa fa-circle-chevron-down"></i></span></a>
-                                                </div>
-                                            </div>
-
+                                            <input type="text" class="form-control" asp-for="Item2.CompanyName" placeholder="Company Name">
+                                            <input type="text" class="form-control" asp-for="Item2.ContactNo1" placeholder="Phone No">
+                                            <input type="text" class="form-control" asp-for="Item2.EmailId" placeholder="EmailId">
+                                            <input type="text" class="form-control" asp-for="Item2.GSTNo" placeholder="GSTNo">
+                                            
                                         </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -157,9 +143,7 @@
                 </div>
 
                 <div class="filter-buttons">
-                    <button type="submit" class="d-inline-flex align-items-center justify-content-center btn w-100 btn-primary">
-                        Apply
-                    </button>
+                    <a class="d-inline-flex align-items-center justify-content-center btn w-100 btn-primary" onclick="OnChangeSelect()">Apply</a>
                     <button type="submit" class="d-inline-flex align-items-center justify-content-center btn w-100 btn-secondary">
                         Reset
                     </button>
@@ -170,53 +154,7 @@
 </div>
 
 
-<div class="modal custom-modal fade" id="add_vendor" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <div class="form-header modal-header-title text-start mb-0">
-                    <h4 class="mb-0">Add Vendor</h4>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <form action="#">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="input-block mb-3">
-                                <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Enter Name">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="input-block mb-3">
-                                <label>Email</label>
-                                <input type="text" class="form-control" placeholder="Enter Email Address">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="input-block mb-3">
-                                <label>Phone Number</label>
-                                <input type="number" class="form-control" placeholder="Enter Phone Number">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="input-block mb-0">
-                                <label>Closing Balance</label>
-                                <input type="number" class="form-control" placeholder="Enter Closing Balance Amount">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-back cancel-btn me-2">Cancel</button>
-                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">Add Vendor</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("_AddVendorView", _modeldata)
 
 
 <div class="modal custom-modal fade" id="edit_vendor" role="dialog">
@@ -352,3 +290,61 @@
         </div>
     </div>
 </div>
+
+<script>
+    function ChangePage(e, t) {
+        var data = {
+            pageNo: t
+        };
+        $.ajax({
+            url: '@Url.Action(indexModel.ActionName, indexModel.ControllerName)', // Corrected Razor syntax for URL
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#tb').html(response);
+            },
+            error: function (error) {
+                alert('An error occurred: ' + error.responseText);
+            }
+        });
+    }
+    function CallSort(e, t, a) {
+        debugger;
+        var data = {
+            cols: t,
+            order: a
+        };
+
+        $.ajax({
+            url: '@Url.Action(indexModel.ActionName, indexModel.ControllerName)', // Corrected Razor syntax for URL
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#tb').html(response);
+            },
+            error: function (error) {
+                alert('An error occurred: ' + error.responseText);
+            }
+        });
+    }
+    function OnChangeSelect() {
+        var data = {
+            VendorName: $("#Item2_VendorName").val(),
+            CompanyName: $("#Item2_CompanyName").val(),
+            ContactNo1: $("#Item2_ContactNo1").val(),
+            EmailId: $("#Item2_EmailId").val(),
+            GSTNo: $("#Item2_GSTNo").val()
+        };
+        $.ajax({
+            url: '@Url.Action(indexModel.ActionName, indexModel.ControllerName)', // Corrected Razor syntax for URL
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#tb').html(response);
+            },
+            error: function (error) {
+                alert('An error occurred: ' + error.responseText);
+            }
+        });
+    }
+</script>
