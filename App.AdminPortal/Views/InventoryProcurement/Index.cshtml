@@ -1,0 +1,215 @@
+﻿@model Root.Models.Tables.InventoryProcurementDetail
+@{
+
+    ViewBag.Title = ViewBag.PageModelName;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-wrapper" data-select2-id="18" style="min-height: 341px;">
+    <div class="content container-fluid" data-select2-id="17">
+        <div class="card mb-0" data-select2-id="16">
+            <div class="card-body" data-select2-id="15">
+                <div class="page-header">
+                    <div class="content-page-header">
+                        <h5>Add Products / Services</h5>
+                    </div>
+                </div>
+                <div class="row" data-select2-id="14">
+                    <div class="col-md-12" data-select2-id="13">
+                        <div class="form-group-item" data-select2-id="12">
+                            <h5 class="form-title">Basic Details</h5>
+                            <div class="row" data-select2-id="11">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="DeviceType.DeviceName"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.DeviceType, "DeviceTypeId", "DeviceName"))" name="DeviceTypeId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="BrandDetail.BrandName"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.brandDetails, "BrandDetailId", "BrandName"))" name="BrandDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3 add-products">
+                                        <label asp-for="DeviceProcessorDetail.DeviceProcessorName"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.deviceProcessorDetails, "DeviceProcessorDetailId", "DeviceProcessorName"))" name="DeviceProcessorDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="GenerationDetail.GenerationName"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.generationDetails, "GenerationDetailId", "GenerationName"))" name="GenerationDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="RAMDetail.RAMSize"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.rAMDetails, "RAMDetailId", "RAMSize"))" name="RAMDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="HardDiskDetail.HardDiskSize"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.hardDiskDetails, "HardDiskDetailId", "HardDiskInfo"))" name="HardDiskDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="VendorDetail.VendorName"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.vendorDetails, "VendorDetailId", "VendorName"))" name="VendorDetailId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="ProcurementType.ProcurementNameType"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.procurementTypes, "ProcurementTypeId", "ProcurementNameType"))" name="ProcurementTypeId">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="SerialNumber"></label>
+                                        <input type="text" asp-for=SerialNumber class="form-control" placeholder="Serial Number">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3 add-products">
+                                        <label asp-for="TTSPLID"></label>
+                                        <input type="text" asp-for=TTSPLID class="form-control" placeholder="TTSPLID">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label asp-for="PONumber"></label>
+                                        <input type="text" asp-for=PONumber class="form-control" placeholder="PO Number">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                       
+                                        <label asp-for="PurchaseDate"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                        <input type="text" asp-for=PurchaseDate class="datetimepicker form-control" placeholder="Purchase Date">
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="POD"></label>
+                                        <input type="text" asp-for=POD class="form-control" placeholder="POD">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="Warranty"></label>
+                                        <input type="text" asp-for=Warranty class="form-control" placeholder="Warrantya">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="RentStartDate"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" asp-for=RentStartDate class="datetimepicker form-control" placeholder="Rent Start Date">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="Tenure"></label>
+                                        <input type="text" asp-for=Tenure class="form-control" placeholder="Tenure">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="QualityCheckStatus"></label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.QualityCheckStatus, "Value", "Text"))" name="QualityCheckStatus">
+                                            <option>Select Value</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="QualityCheckProcessDt"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" asp-for=QualityCheckProcessDt class="datetimepicker form-control" placeholder="Purchase Date">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="QualityCheckRetunDt"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" asp-for=QualityCheckRetunDt class="datetimepicker form-control" placeholder="Purchase Date">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="ReturnToVendorDt"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" asp-for=ReturnToVendorDt class="datetimepicker form-control" placeholder="Purchase Date">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+
+                                        <label asp-for="RentStopDt"></label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" asp-for=RentStopDt class="datetimepicker form-control" placeholder="Purchase Date">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form action="https://kanakku.dreamstechnologies.com/html/template/product-list.html" class="text-end">
+                            <button type="reset" class="btn btn-primary cancel me-2">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Add Item
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
