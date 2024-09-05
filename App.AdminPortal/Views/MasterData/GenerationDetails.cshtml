@@ -142,16 +142,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <form asp-action="AddDeviceMaster" asp-controller="MasterData" method="post">
+            <form asp-action="AddGenerationDetails" asp-controller="MasterData" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
                             <div class="input-block mb-3">
                                 <label asp-for="@_model.GenerationName"></label>
-                                <input type="text" name="DeviceName" class="form-control" placeholder="Device Type Name">
+                                <input type="text" name="GenerationName" class="form-control" placeholder="Generation Name">
                             </div>
                         </div>
-
+                        <div class="col-lg-6 col-md-12">
+                            <div class="input-block mb-3">
+                                <label asp-for="@_model.DeviceType.DeviceName"></label>
+                                <select class="select" asp-items="@(new SelectList(ViewBag.DeviceType, "DeviceTypeId", "DeviceName"))" name="DeviceTypeId">
+                                    <option>Select Value</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
