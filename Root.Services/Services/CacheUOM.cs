@@ -161,7 +161,7 @@ namespace Root.Services.Services
         public async Task<List<ParentDDResult>> DistrictsList(bool update = false) { return await GetValuesAsync<ParentDDResult>(update, null); }
         public async Task<List<DeviceType>> DeviceTypeList(bool update = false) { return await GetValuesAsync<DeviceType>(update, null); }
         public async Task<List<BrandDetail>> BrandDetails(bool update = false) { return await GetValuesAsync<BrandDetail>(update, null); }
-        //public async Task<List<DeviceModeldetail>> DeviceModeldetails(bool update = false) { return await GetValuesAsync<DeviceModeldetail>(update, null); }
+        public async Task<List<DeviceModeldetail>> DeviceModeldetails(bool update = false) { return await GetValuesAsync<DeviceModeldetail>(update, null); }
         public async Task<List<DeviceProcessorDetail>> DeviceProcessorDetails(bool update = false) { return await GetValuesAsync<DeviceProcessorDetail>(update, null); }
         public async Task<List<GenerationDetail>> GenerationDetails(bool update = false) { return await GetValuesAsync<GenerationDetail>(update, null); }
         public async Task<List<RAMDetail>> RAMDetails(bool update = false) { return await GetValuesAsync<RAMDetail>(update, null); }

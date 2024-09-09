@@ -1,0 +1,94 @@
+﻿@{
+
+    ViewBag.Title = ViewBag.PageModelName;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    
+}
+<style>
+    .is-invalid {
+        border-color: #dc3545;
+    }
+</style>
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="page-header">
+                    <div class="content-page-header">
+                        <h5>Recive Items</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group-item border-0 mb-0">
+                            <div class="row align-item-center">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label >Po Number</label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" name="VendorDetailId">
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label>Select Item</label>
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" name="VendorDetailId">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label>Total Quantity</label>
+                                        
+                                            <input type="text" class="form-control" placeholder="Total Quantity" disabled>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label>Reciving Quantity</label>
+                                        
+                                            <input type="text" class="form-control" placeholder="Reciving Quantity">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label>Reciving Date</label>
+                                        <div class="cal-icon cal-icon-info">
+                                            <input type="text" class="datetimepicker form-control" placeholder="Reciving Date">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="input-block mb-3">
+                                        <label>Upload Seriol Number</label>
+
+                                        <input type="file" class="form-control" placeholder="Seriol Number">
+                                       
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                      
+                        <form action="https://kanakku.dreamstechnologies.com/html/template/invoices.html" class="add-customer-btns text-end">
+                            <button type="reset" class="btn btn-primary cancel me-2">Cancel</button>
+                            
+                            <button type="submit" class="btn btn-primary">Save & Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
