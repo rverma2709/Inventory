@@ -130,7 +130,7 @@
                 <div class="mt-12">
                     <button type="button" class="btn btn-primary" id="add-row">Add Item</button>
                 </div>
-                                        <!-- Repeater Body -->
+                    <!-- Repeater Body class="form-control form-small select" -->
                     <div class="form-group-item" data-select2-id="12" id="repeater">
                         <div class="row repeater-item" data-select2-id="11">
                             <!-- Brand Name -->
@@ -139,6 +139,7 @@
                                     <label asp-for="@_model.BrandDetail.BrandName"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.brandDetails, "BrandDetailId", "BrandName"))" name="BrandDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- Model Name -->
@@ -147,6 +148,7 @@
                                     <label asp-for="@_model.Modeldetail.ModelName"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.modeldetails, "DeviceModeldetailId", "ModelName"))" name="DeviceModelDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- Processor -->
@@ -155,6 +157,7 @@
                                     <label asp-for="@_model.DeviceProcessorDetail.DeviceProcessorName"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.deviceProcessorDetails, "DeviceProcessorDetailId", "DeviceProcessorName"))" name="DeviceProcessorDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- Generation -->
@@ -163,6 +166,7 @@
                                     <label asp-for="@_model.GenerationDetail.GenerationName"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.generationDetails, "GenerationDetailId", "GenerationName"))" name="GenerationDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- RAM -->
@@ -171,6 +175,7 @@
                                     <label asp-for="@_model.RAMDetail.RAMSize"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.rAMDetails, "RAMDetailId", "RAMSize"))" name="RAMDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- Hard Disk -->
@@ -179,6 +184,7 @@
                                     <label asp-for="@_model.HardDiskDetail.HardDiskSize"></label>
                                     <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.hardDiskDetails, "HardDiskDetailId", "HardDiskInfo"))" name="HardDiskDetailId" required>
                                     </select>
+                                    <div class="invalid-feedback">*</div>
                                 </div>
                             </div>
                             <!-- Quantity -->
@@ -313,19 +319,31 @@
 </div>
 <script>
     $(document).ready(function () {
-        
+        //$('.select').select2();
         // Add Row functionality
         $('#add-row').click(function () {
-            var newRow = $('#repeater .repeater-item:first').clone();
+            var repeaterItem = $('.repeater-item').first();
 
-            // Clear the cloned input values
+            //Destroy Select2 instance to remove extra wrappers
+            repeaterItem.find('.select2.select2-container.select2-container--default').each(function () {
+               // alert("h");
+                $(this).remove(); // Destroy select2 for each select element
+            });
+
+
+            // Clone the row after Select2 destruction
+            var newRow = repeaterItem.clone();
+
+            // Reset the input and select fields in the cloned row
             newRow.find('input').val('');
             newRow.find('textarea').val('');
-            newRow.find('select').prop('selectedIndex', 0);
+            newRow.find('select').val(''); // Reset dropdowns
 
-            // Append the new row to the repeater
+            // Append the new row to the repeater container
             $('#repeater').append(newRow);
 
+            // Reinitialize Select2 for both existing and newly added select elements
+            newRow.find('select').select2();
             // Enable the remove button for all but the last row
             toggleRemoveButton();
         });
@@ -357,7 +375,8 @@
         }
 
         // Submit button to gather the repeater data and validate
-        $('#submit-btn').click(function () {
+        $('#submit-btn').click(function (e) {
+            e.preventDefault(); // Prevent the default form submission
             var isValid = true;
 
             // Validate each form field inside the repeater
@@ -374,7 +393,8 @@
 
             if (isValid) {
                 var repeaterData = [];
-                
+
+                // Collect form data
                 $('#repeater .repeater-item').each(function () {
                     var row = {
                         BrandDetailId: $(this).find('select[name="BrandDetailId"]').val(),
@@ -389,18 +409,22 @@
                     };
                     repeaterData.push(row);
                 });
-              
+
+                // Create hidden input to store repeater data
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'RepeaterData',
                     value: JSON.stringify(repeaterData)
                 }).appendTo('#po-form');
-                this.submit();
-                
+
+                // Submit the form explicitly
+                $('#po-form').submit();
+
             } else {
                 alert('Please fill all required fields.');
             }
         });
+
 
         // Initially toggle the remove button
         toggleRemoveButton();
