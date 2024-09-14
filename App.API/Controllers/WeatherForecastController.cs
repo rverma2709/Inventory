@@ -1,10 +1,13 @@
+using App.API.Models;
+using App.APIServices.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : DefaultController
     {
         private static readonly string[] Summaries = new[]
         {
@@ -13,12 +16,16 @@ namespace App.API.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, APIStaticService staticService, IHttpContextAccessor httpContextAccessor) : base(staticService, httpContextAccessor)
         {
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        //[HttpGet(Name = "GetWeatherForecast")]
+        [Authorize]
+        [Route("GetWeatherForecast"), HttpPost]
+        [ServiceFilter(typeof(UniqueKeyMatching))]
+        [ServiceFilter(typeof(KeyGenrate))]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

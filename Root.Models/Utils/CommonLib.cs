@@ -14,7 +14,11 @@ using System.Text.RegularExpressions;
 
 namespace Root.Models.Utils
 {
-    public class ResJsonOutput
+    public class JwtToken
+    {
+        public string token { get; set; }
+    }
+    public class ResJsonOutput: JwtToken
     {
         public ResJsonOutput()
         {

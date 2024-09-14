@@ -127,7 +127,7 @@ namespace Root.Data.UnitOfWork
             //ConnStr = ConnStr.Substring(ProgConstants.ConnKeySize + ProgConstants.ConnIVSize, ConnStr.Length - ProgConstants.ConnKeySize - ProgConstants.ConnIVSize);
             //return TripleDES.Decrypt(ConnStr, ConnKey, ConnIV);
             //return "Data Source=WJLP-3429;Initial Catalog=Inventory;Integrated Security=True;Trust Server Certificate=True";
-            return "Data Source=tcp:inventorymgmtdb.database.windows.net,1433;Initial Catalog=Inventory;User ID=inventorydb;Password=Admin@1234";
+            return "Data Source=tcp:inventorymgmtdb.database.windows.net,1433;Initial Catalog=Inventory;User ID=inventorydb;Password=Admin@1234;TrustServerCertificate=true";
         }
     }
 }

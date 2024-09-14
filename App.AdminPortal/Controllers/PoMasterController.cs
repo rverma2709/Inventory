@@ -27,8 +27,8 @@ namespace App.AdminPortal.Controllers
             List<GenerationDetail> generationDetails = (await _staticService._cacheRepo.GenerationDetails()).Where(x => x.DeviceTypeId == id).ToList();
             List<RAMDetail> rAMDetails = (await _staticService._cacheRepo.RAMDetails()).Where(x => x.DeviceTypeId == id).ToList();
             List<HardDiskDetail> hardDiskDetails = (await _staticService._cacheRepo.HardDiskDetails()).Where(x => x.DeviceTypeId == id).ToList();
-            List<VendorDetail> vendorDetails = (await _staticService._cacheRepo.VendorDetails(true));
-            List<ProcurementType> procurementTypes = (await _staticService._cacheRepo.ProcurementTypes(true));
+            List<VendorDetail> vendorDetails = (await _staticService._cacheRepo.VendorDetails());
+            List<ProcurementType> procurementTypes = (await _staticService._cacheRepo.ProcurementTypes());
             ViewBag.DeviceType = (deviceTypes.Select(x => new { x.DeviceTypeId, x.DeviceName }).ToList());
             ViewBag.brandDetails = (brandDetails.Select(x => new { x.BrandDetailId, x.BrandName }).ToList());
             ViewBag.modeldetails = (modeldetails.Select(x => new { x.DeviceModeldetailId, x.ModelName }).ToList());
@@ -96,14 +96,17 @@ namespace App.AdminPortal.Controllers
                     HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
                     return RedirectToAction("LaptopPoCreate", "PoMaster");
                 }
-
+                else
+                {
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Please fill all required fields.");
+                }
             }
             catch (Exception ex)
             {
                 await CatchError(ex);
                 HttpContext.Session.SetObject(ProgConstants.ErrMsg, "Something Error");
             }
-            
+            await FormInitialise(1);
             // Reload the form with validation messages
             return View(new PoDetailView());
         }

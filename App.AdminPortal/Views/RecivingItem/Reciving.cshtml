@@ -1,4 +1,7 @@
-﻿@{
+﻿@model Root.Models.ViewModels.RecivingItemView
+@using Root.Models.StoredProcedures
+@using Root.Services.DBContext
+@{
 
     ViewBag.Title = ViewBag.PageModelName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -23,14 +26,17 @@
                         <h5>Recive Items</h5>
                     </div>
                 </div>
+                <form asp-action="Reciving" asp-controller="RecivingItem" method="post" id="recivingForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-12">
+                       
                         <div class="form-group-item border-0 mb-0">
                             <div class="row align-item-center">
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label >Po Number</label>
-                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" name="VendorDetailId">
+                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" asp-for="PoDetailId" onchange="FillCustomChildDropDown('PoItemDetilId','GetGramPanchayatData', 'PoDetailId|PoDetailId');" tabindex="-1">
+                                            <option> select Po Number</option>
                                         </select>
                                         
                                     </div>
@@ -38,23 +44,31 @@
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label>Select Item</label>
-                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" name="VendorDetailId">
-                                        </select>
+                                      
+                                       
+                                           
+                                            <select class="form-control select2-container--above"  asp-for="PoItemDetilId" id="PoItemDetilId" tabindex="-1">
+                                            </select>
+                                                
+                                           
+                                           
+                                                
+                                           
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label>Total Quantity</label>
-                                        
-                                            <input type="text" class="form-control" placeholder="Total Quantity" disabled>
+
+                                        <input type="text" class="form-control" placeholder="Total Quantity" asp-for="Quantity" id="Quantity" disabled>
                                         
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label>Reciving Quantity</label>
-                                        
-                                            <input type="text" class="form-control" placeholder="Reciving Quantity">
+
+                                        <input type="text" class="form-control" placeholder="Reciving Quantity" >
                                         
                                     </div>
                                 </div>
@@ -70,7 +84,7 @@
                                     <div class="input-block mb-3">
                                         <label>Upload Seriol Number</label>
 
-                                        <input type="file" class="form-control" placeholder="Seriol Number">
+                                            <input type="file"  class="form-control uploadfile" placeholder="Seriol Number" asp-for="BulkImportDocument">
                                        
                                     </div>
                                 </div>
@@ -78,17 +92,101 @@
                             </div>
                         </div>
                       
-                        <form action="https://kanakku.dreamstechnologies.com/html/template/invoices.html" class="add-customer-btns text-end">
+                       
                             <button type="reset" class="btn btn-primary cancel me-2">Cancel</button>
                             
                             <button type="submit" class="btn btn-primary">Save & Send</button>
-                        </form>
+                        
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('#recivingForm').on('submit', function (e) {
+            e.preventDefault();  // Prevent default form submission
+
+            var formData = new FormData(this); // Create FormData object from form
+
+            $.ajax({
+                url: '@Url.Action("Reciving", "RecivingItem")', // URL to the controller action
+                type: 'POST',
+                data: formData,
+                processData: false,  // Important for file uploads
+                contentType: false,  // Important for file uploads
+                success: function (response) {
+                    alert("Form submitted successfully!");
+                    // Handle success, e.g., show a success message or redirect
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error: " + errorThrown);
+                    // Handle error, e.g., show an error message
+                }
+            });
+        });
+    });
+
+
+</script>
+<script>
+    var DuplicateCalls = new Array;
+    function FillCustomChildDropDown(id, t, a) {
+       
+        var ServerPath = "http://localhost:5127/";
+        
+        if ($('#' + id).length == 0)
+            return;
+        var r, i = "FillCustomChildDropDown : " + id + " " + t + " " + a,
+            n = $.grep(DuplicateCalls, (function (e) {
+                return e.fld == i
+            }));
+        if (0 == n.length) {
+            var o = {
+                fld: i,
+                lastCall: new Date
+            };
+            DuplicateCalls.push(o)
+        } else {
+            var l = new Date;
+            if (l.getTime() - n[0].lastCall < 200) return;
+            var s = DuplicateCalls.findIndex((e => e.fld == i));
+            DuplicateCalls[s].lastCall = l
+        }
+        var d = {},
+            c = "";
+        return $(a.split(",")).each((function (e, t) {
+            var a = t.split("|");
+            0 == a.length && a.push(a[0]), 0 == e && (c = $("#" + a[1]).val()), d[a[0]] = $("#" + a[1]).val()
+        })), null != c && "" != c ? $.ajax({
+            url: ServerPath + "RecivingItem/" + t,
+            method: "POST",
+            async: !1,
+            data: d,
+            success: function (t) {
+                if (1 == t.status.isSuccess) {
+                    var a = JSON.parse(t.data);
+                    InitDropDown(id, a), r = a
+                } else InitDropDown(id, [])
+            }
+        }) : InitDropDown(id, []), r
+    }
+    function InitDropDown(e, t) {
+        var a = $("#" + e);
+        
+        a.empty(), a.prop("multiple") || a.append($("<option/>", {
+            value: "",
+            text: "Select "
+        })), $.each(t, (function (e, t) {
+            a.append($("<option/>", {
+                value: t.PoItemDetilId,
+                text: t.Text
+            }))
+        })), a.val("").trigger("change").trigger("chosen:updated")
+    }
+</script>
 
 
 

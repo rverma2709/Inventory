@@ -16,6 +16,10 @@ ConfigurationManager Configuration = builder.Configuration;
 
 AppConfig myConfig = Configuration.GetSection("AppConfig").Get<AppConfig>();
 // Add services to the container.
+builder.Services.AddAuthorization();
+
+
+// Add services to the container.
 builder.Services.AddMvc();
 //builder.Services.AddSingleton<IFileProvider>(
 //new PhysicalFileProvider(CommonLib.wwwRootPath));
@@ -68,6 +72,13 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(myConfig.sessionConfigs.SessionExpiry);
     options.Cookie.Name = ChannelID + "_";
 });
+
+
+
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -2,13 +2,9 @@ using App.AdminPortal.Common;
 using App.AdminPortal.Models;
 using App.AdminPortalServices.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Root.Models.LogTables;
-using Root.Models.Tables;
-using Root.Services.DBContext;
-using Root.Services.Interfaces;
-using Root.Services.Services;
 using System.Diagnostics;
+
+
 
 namespace App.AdminPortal.Controllers
 {
