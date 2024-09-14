@@ -47,7 +47,7 @@
                                       
                                        
                                            
-                                            <select class="form-control select2-container--above"  asp-for="PoItemDetilId" id="PoItemDetilId" tabindex="-1">
+                                            <select class="form-control select2-container--above" asp-for="PoItemDetilId" id="PoItemDetilId" tabindex="-1" onchange="GetItemQuantity()">
                                             </select>
                                                 
                                            
@@ -66,9 +66,9 @@
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
-                                        <label>Reciving Quantity</label>
+                                            <label>Remaining Quantity</label>
 
-                                        <input type="text" class="form-control" placeholder="Reciving Quantity" >
+                                            <input type="text" class="form-control" placeholder="Reciving Quantity" id="RemainingQuantity" disabled>
                                         
                                     </div>
                                 </div>
@@ -184,9 +184,31 @@
                 value: t.PoItemDetilId,
                 text: t.Text
             }))
-        })), a.val("").trigger("change").trigger("chosen:updated")
+        }))// a.val("").trigger("change").trigger("chosen:updated")
     }
 </script>
-
+<script>
+    function GetItemQuantity() {
+        $.ajax({
+            url:  "http://localhost:5127/RecivingItem/QuantityData",
+            method: "POST",
+            data: { PoDetailId: $("#PoItemDetilId").val() }, // Ensure PoDetailId is passed
+            success: function (t) {
+                if (t.status.isSuccess) {
+                    var a = JSON.parse(t.data);
+                    alert(a.Quantity); // Removed [0] since it's a single item
+                    $("#RemainingQuantity").val(a.RemainingQuantity);
+                    $("#Quantity").val(a.Quantity);
+                } else {
+                    alert("Failed to fetch item quantity: " + t.status.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    
+    }
+</script>
 
 

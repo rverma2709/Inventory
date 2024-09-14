@@ -41,5 +41,18 @@ namespace App.AdminPortal.Controllers
             DDData.Status.IsSuccess = true;
             return DDData;
         }
+
+        [HttpPost]
+        public async Task<ResJsonOutput> QuantityData(long? PoDetailId)
+        {
+            ResJsonOutput DDData = new ResJsonOutput();
+
+            ItemQuantity gpil = (await _staticService.ExecuteSPAsync<DBEntities, ItemQuantity>(new SFGetItemQuantity() { PoItemDetilId = PoDetailId })).FirstOrDefault();
+
+
+            DDData.Data = CommonLib.ConvertObjectToJson(gpil);
+            DDData.Status.IsSuccess = true;
+            return DDData;
+        }
     }
 }

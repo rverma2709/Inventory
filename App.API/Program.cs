@@ -48,8 +48,8 @@ builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<CacheUOM>();
 //builder.Services.AddTransient<ICSCService, CSCService>();
 builder.Services.AddTransient<IViewRenderService, ViewRenderService>();
-builder.Services.AddScoped<UniqueKeyActionFilterAttribute>();
-builder.Services.AddScoped<UniqueKeyMatchingFilterAttribute>();
+builder.Services.AddScoped<UniqueKeyMatching>();
+builder.Services.AddScoped<KeyGenrate>();
 string RedisConnectionString = string.Empty;
 if (myConfig.RedisConfig.IsEncConnectionString)
 {
