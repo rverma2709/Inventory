@@ -90,5 +90,8 @@ namespace Root.Models.Utils
         public const string OTPATMPEXD = "OTPATMPEXD";
         public const string Refresh = "Refresh";
         #endregion
+
+        public const string ExcelFileExtension = ".xlsx";
+        public const string CSVFileExtension = ".csv";
     }
 }

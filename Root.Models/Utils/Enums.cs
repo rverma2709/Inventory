@@ -16,7 +16,15 @@ namespace Root.Models.Utils
         {
             DUPREC,
             GNLERR,
-            REQFLD
+            REQFLD,
+            EXDFILSIZ,
+            INVFILTYP,
+            INVREQ,
+            MINFILSIZ,
+            HARMFULCHAR,
+            NOTFND,
+            INVUSER
+
         }
     }
 }

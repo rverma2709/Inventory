@@ -31,6 +31,14 @@
                             <li><a href="@Url.Action("LaptopPoCreate","PoMaster")" class="active"> ADD Laptop Po</a></li>
                         </ul>
                     </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fe fe-grid"></i> <span>Reciving Master</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="@Url.Action("ADDRecivingItem","RecivingItem")" class="active">Add Item</a></li>
+                            <li><a href="@Url.Action("Reciving","RecivingItem")" class="active">Bulk Upload</a></li>
+                            <li><a href="@Url.Action("GetRecivingFile","RecivingItem")" class="active">Bulk File List</a></li>
+                        </ul>
+                    </li>
                   
                 </ul>
               
@@ -59,6 +67,13 @@
                     <a href="#"><i class="fe fe-home"></i> <span> PO Details</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="@Url.Action("LaptopPoCreate","PoMaster")">Add Laptop Po</a></li>
+
+                    </ul>
+                    <a href="#"><i class="fe fe-home"></i> <span> Reciving Master</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="@Url.Action("ADDRecivingItem","RecivingItem")">Add Item</a></li>
+                        <li><a href="@Url.Action("Reciving","RecivingItem")">Bulk Upload</a></li>
+                        <li><a href="@Url.Action("GetRecivingFile","RecivingItem")">Bulk File List</a></li>
 
                     </ul>
                    

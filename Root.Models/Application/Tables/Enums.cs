@@ -34,7 +34,8 @@ namespace Root.Models.Application.Tables
             UNQERR,
             SESEXP,
             LOGFLD,
-            ACCERR
+            ACCERR,
+            INVUSER
         }
     }
 }

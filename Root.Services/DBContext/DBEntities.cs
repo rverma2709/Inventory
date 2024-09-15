@@ -35,5 +35,9 @@ namespace Root.Services.DBContext
         public DbSet<HardDiskDetail> HardDiskDetails { get; set; }
         public DbSet<ProcurementType> ProcurementTypes { get; set; }
         public DbSet<VendorDetail> VendorDetails { get; set; }
+        public DbSet<BulkFileRecivingDetail> BulkFileRecivingDetails { get; set; }
+        public DbSet<AllowedFile> AllowedFiles { get; set; }
+        public DbSet<PoDetail> PoDetails {  get; set; }
+        public DbSet<PoItemDetail> PoItemDetails { get; set; }
     }
 }

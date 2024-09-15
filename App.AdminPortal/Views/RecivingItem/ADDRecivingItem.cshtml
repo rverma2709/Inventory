@@ -5,7 +5,7 @@
 
     ViewBag.Title = ViewBag.PageModelName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    
+
 }
 <style>
     .is-invalid {
@@ -26,92 +26,75 @@
                         <h5>Recive Items</h5>
                     </div>
                 </div>
-                <form asp-action="Reciving" asp-controller="RecivingItem" method="post" id="recivingForm" enctype="multipart/form-data">
+                <form asp-action="ADDRecivingItem" asp-controller="RecivingItem" method="post" id="recivingForm" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="row">
-                    <div class="col-md-12">
-                       
-                        <div class="form-group-item border-0 mb-0">
-                            <div class="row align-item-center">
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                        <label >Po Number</label>
-                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" asp-for="PoDetailId" onchange="FillCustomChildDropDown('PoItemDetilId','GetGramPanchayatData', 'PoDetailId|PoDetailId');" tabindex="-1">
-                                            <option> select Po Number</option>
-                                        </select>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-group-item border-0 mb-0">
+                                <div class="row align-item-center">
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="input-block mb-3">
+                                            <label>Po Number</label>
+                                            <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.PoDetails, "Value", "Text"))" asp-for="PoDetailId" onchange="FillCustomChildDropDown('PoItemDetilId','GetGramPanchayatData', 'PoDetailId|PoDetailId');" tabindex="-1">
+                                                <option> select Po Number</option>
+                                            </select>
                                             <p>
                                                 @Html.ValidationMessageFor(u => u.PoDetailId)
                                             </p>
-                                        
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                        <label>Select Item</label>
-                                      
-                                       
-                                           
-                                            <select class="form-control select2-container--above" asp-for="PoItemDetilId" id="PoItemDetilId" tabindex="-1" onchange="GetItemQuantity()">
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="input-block mb-3">
+                                            <label>Select Item</label>
+
+
+
+                                            <select class="form-control select2-container--above" asp-for="PoItemDetilId" id="PoItemDetilId" tabindex="-1" >
                                             </select>
 
                                             <p>
                                                 @Html.ValidationMessageFor(u => u.PoItemDetilId)
                                             </p>
-                                           
-                                                
-                                           
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                        <label>Total Quantity</label>
 
-                                        <input type="text" class="form-control" placeholder="Total Quantity" asp-for="Quantity" id="Quantity" disabled>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                            <label>Remaining Quantity</label>
 
-                                            <input type="text" class="form-control" placeholder="Reciving Quantity" id="RemainingQuantity" name="RemainingQuantity" readonly>
-                                        
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                        <label>Reciving Date</label>
-                                        <div class="cal-icon cal-icon-info">
-                                            <input type="text" asp-for=RecivingDate class="datetimepicker form-control"  placeholder="Reciving Date">
+                                  
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="input-block mb-3">
+                                            <label>Reciving Date</label>
+                                            <div class="cal-icon cal-icon-info">
+                                                <input type="text" asp-for=RecivingDate class="datetimepicker form-control" placeholder="Reciving Date">
                                                 <p>
                                                     @Html.ValidationMessageFor(u => u.RecivingDate)
                                                 </p>
-                                         </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12">
-                                    <div class="input-block mb-3">
-                                        <label>Upload Seriol Number</label>
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="input-block mb-3">
+                                            <label>Seriol Number</label>
 
-                                            <input type="file" class="form-control uploadfile" placeholder="Seriol Number"  id="BulkImportDocument" name="BulkImportDocument">
-                                            @* <p>
-                                                @Html.ValidationMessageFor(u => u.BulkImportDocument)
-                                            </p> *@
+                                            <input type="text" class="form-control" placeholder="Reciving Quantity" id="SeriolNumber" name="SeriolNumber" required>
+
+                                        </div>
                                     </div>
+
                                 </div>
-                               
                             </div>
-                        </div>
-                      
-                       
+
+
                             <button type="reset" class="btn btn-primary cancel me-2">Cancel</button>
-                            
+
                             <button type="submit" class="btn btn-primary">Save & Send</button>
-                        
+
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -147,9 +130,9 @@
 <script>
     var DuplicateCalls = new Array;
     function FillCustomChildDropDown(id, t, a) {
-       
+
         var ServerPath = "http://localhost:5127/";
-        
+
         if ($('#' + id).length == 0)
             return;
         var r, i = "FillCustomChildDropDown : " + id + " " + t + " " + a,
@@ -188,7 +171,7 @@
     }
     function InitDropDown(e, t) {
         var a = $("#" + e);
-        
+
         a.empty(), a.prop("multiple") || a.append($("<option/>", {
             value: "",
             text: "Select "
@@ -198,29 +181,6 @@
                 text: t.Text
             }))
         }))// a.val("").trigger("change").trigger("chosen:updated")
-    }
-</script>
-<script>
-    function GetItemQuantity() {
-        $.ajax({
-            url: '@Url.Action("QuantityData", "RecivingItem")',
-            method: "POST",
-            data: { PoDetailId: $("#PoItemDetilId").val() }, // Ensure PoDetailId is passed
-            success: function (t) {
-                if (t.status.isSuccess) {
-                    var a = JSON.parse(t.data);
-                    
-                    $("#RemainingQuantity").val(a.RemainingQuantity);
-                    $("#Quantity").val(a.Quantity);
-                } else {
-                    alert("Failed to fetch item quantity: " + t.status.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("Error: " + error);
-            }
-        });
-    
     }
 </script>
 

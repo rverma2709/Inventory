@@ -11,11 +11,16 @@ namespace Root.Models.ViewModels
 {
     public class RecivingItemView
     {
-        public long? PoDetailId { get; set; }
-        public long? PoItemDetilId { get; set; }
-        public long? Quantity { get; set; }
         [Required]
-        [DisplayName("Upload Document")]
-        public string BulkImportDocument { get; set; }
+        public long? PoDetailId { get; set; }
+        [Required]
+        public long? PoItemDetilId { get; set; }
+        public long? RemainingQuantity { get; set; }
+        [Required]
+        public DateTime? RecivingDate { get; set; }
+        public long? Quantity { get; set; }
+        public string? SeriolNumber { get; set; }
+
+
     }
 }

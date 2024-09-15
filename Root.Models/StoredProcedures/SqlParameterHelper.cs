@@ -18,7 +18,7 @@ namespace Root.Models.StoredProcedures
         InputOutput = 3,
         ReturnValue = 6
     }
-    public class StoredProcedureNameAttribute : Attribute
+    public class StoredProcedureNameAttribute : System.Attribute
     {
         public string Name { get; set; }
         public StoredProcedureNameAttribute(string name)
@@ -27,7 +27,7 @@ namespace Root.Models.StoredProcedures
         }
     }
     [System.AttributeUsage(AttributeTargets.Property)]
-    public class QueryParamAttribute : Attribute
+    public class QueryParamAttribute : System.Attribute
     {
         public string _name { get; set; }
         public Direction _direction { get; set; }
@@ -220,7 +220,7 @@ namespace Root.Models.StoredProcedures
         }
     }
     [System.AttributeUsage(AttributeTargets.Property)]
-    public class QueryParamIgnoreAttribute : Attribute
+    public class QueryParamIgnoreAttribute : System.Attribute
     {
     }
     public sealed class TypeConvertor

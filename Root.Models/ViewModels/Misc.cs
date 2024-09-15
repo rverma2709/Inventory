@@ -9,6 +9,27 @@ using Root.Models.Application.Tables;
 
 namespace Root.Models.ViewModels
 {
+    public class ViewFileResult
+    {
+        [DisplayName("FileName")]
+        public string FileName { get; set; }
+
+        [DisplayName("Base64")]
+        public string Base64 { get; set; }
+    }
+    public class UploadFileModel
+    {
+        [Required]
+        [DisplayName("FileName")]
+        public string FileName { get; set; }
+
+        [Required]
+        [DisplayName("FileString")]
+        public string FileString { get; set; }
+
+        [Required]
+        public long AllowedFileId { get; set; }
+    }
     public class ParentDDResult
     {
         public bool Disabled { get; set; }
