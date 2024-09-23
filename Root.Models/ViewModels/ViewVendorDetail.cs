@@ -11,7 +11,7 @@ namespace Root.Models.ViewModels
 {
     public class ViewVendorDetail
     {
-        public long? VendorDetailId { get; set; }
+        public long? InventoryUserId { get; set; }
         [Required]
         [DisplayName("Vendor Name")]
         public string? VendorName { get; set; }
@@ -21,7 +21,7 @@ namespace Root.Models.ViewModels
         [Required]
         [RegularExpression(CommonRegex.MobileNoFormat, ErrorMessage = CommonRegex.MobileNoFormatErr)]
         [DisplayName("Phone No")]
-        public string? ContactNo1 { get; set; }
+        public string? ContactNo { get; set; }
         
         [DisplayName("Phone No 2")]
         public string? ContactNo2 { get; set; }

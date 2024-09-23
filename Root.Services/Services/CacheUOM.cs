@@ -168,6 +168,8 @@ namespace Root.Services.Services
         public async Task<List<HardDiskDetail>> HardDiskDetails(bool update = false) { return await GetValuesAsync<HardDiskDetail>(update, null); }
         public async Task<List<ProcurementType>> ProcurementTypes(bool update = false) { return await GetValuesAsync<ProcurementType>(update, null); }
         public async Task<List<VendorDetail>> VendorDetails(bool update = false) { return await GetValuesAsync<VendorDetail>(update, null); }
+        public async Task<List<InventoryUser>> InventoryUsersDetails(bool update = false) { return await GetValuesAsync<InventoryUser>(update, null); }
+        public async Task<List<InventoryRole>> InventoryUsersRoles(bool update = false) { return await GetValuesAsync<InventoryRole>(update, null); }
 
         public void Dispose()
         {

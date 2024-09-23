@@ -49,6 +49,7 @@ namespace App.API.Controllers
                 {
                     
                     resJsonOutput.Status.IsSuccess = false;
+                    resJsonOutput.Status.Message = "Login Details Wrong";
                 }
             }
             return resJsonOutput;

@@ -11,7 +11,7 @@ namespace Root.Models.StoredProcedures
     {
         public SFGetVendorDetails()
         {
-            cols = "VendorDetailId";
+            cols = "InventoryUserId";
             order = "DESC";
         }
         
@@ -20,7 +20,7 @@ namespace Root.Models.StoredProcedures
         [QueryParam]
         public string? CompanyName { get; set; }
         [QueryParam]
-        public string? ContactNo1 { get; set; }
+        public string? ContactNo { get; set; }
         [QueryParam]
         public string? EmailId { get; set; }
         [QueryParam]

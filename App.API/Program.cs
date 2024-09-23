@@ -87,7 +87,18 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
     };
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")  // Specify your frontend origin here
+                  .AllowAnyHeader()                      // Allow any header
+                  .AllowAnyMethod()                      // Allow any method (GET, POST, etc.)
+                  .AllowCredentials()                // Allow credentials (if needed)
+                  .WithExposedHeaders("apikey");
+        });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,7 +107,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthorization();
 
 

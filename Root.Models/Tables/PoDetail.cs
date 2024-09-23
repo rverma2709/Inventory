@@ -17,7 +17,7 @@ namespace Root.Models.Tables
         public string PoNumber {  get; set; }
 
         public long? DeviceTypeId { get; set; }
-        public long? VendorDetailId { get; set; }
+        public long? InventoryUserId { get; set; }
         public long? ProcurementTypeId { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public DateTime? RentStartDate { get; set; }

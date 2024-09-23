@@ -31,8 +31,10 @@ namespace Root.Models.Tables
         public DateTime? DOB { get; set; }
         [DisplayName("EmailId")]
         public string? EmailId { get; set; }
-        [DisplayName("Contac tNo")]
+        [DisplayName("Contact No")]
         public string? ContactNo { get; set; }
+        [DisplayName("Contact No")]
+        public string? ContactNo2 { get; set; }
         [DisplayName("Image Path")]
         public string? ImagePath { get; set; }
         [DisplayName("Last Login")]
@@ -52,5 +54,7 @@ namespace Root.Models.Tables
         [DisplayName("DistrictId")]
         public long? DistrictId { get; set; }
         public string? InventoryPermissionIds { get; set; }
+        public string? GSTNo { get; set; }
+        public string? Address {  get; set; }
     }
 }

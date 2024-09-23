@@ -16,6 +16,8 @@ namespace Root.Models.StoredProcedures
         public List<RecivingItemList> RecivingItemList { get; set; }
         [QueryParam]
         public long? BulkFileRecivingDetailId {  get; set; }
+        [QueryParam]
+        public long? InventoryUserId { get; set; }
     }
     public class RecivingItemList
     {

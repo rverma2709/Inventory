@@ -35,7 +35,7 @@
                                 <div class="col-lg-4 col-md-6 col-sm-12">
                                     <div class="input-block mb-3">
                                         <label asp-for="VendorDetail.VendorName"></label>
-                                        <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.vendorDetails, "VendorDetailId", "VendorName"))" name="VendorDetailId">
+                                            <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.vendorDetails, "InventoryUserId", "CompanyName"))" name="VendorDetailId">
                                             
                                         </select>
                                             <p>

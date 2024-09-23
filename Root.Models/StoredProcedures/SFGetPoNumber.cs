@@ -10,5 +10,9 @@ namespace Root.Models.StoredProcedures
     public class SFGetPoNumber
     {
     }
+    [StoredProcedureName("GetPoNumberDetails")]
+    public class SFGetPoNumberDetails
+    {
+    }
 
 }

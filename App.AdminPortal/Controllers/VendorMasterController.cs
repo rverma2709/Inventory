@@ -12,22 +12,22 @@ namespace App.AdminPortal.Controllers
 {
     public class VendorMasterController :  AdminPortalController
     {
-        private readonly IDataService<DBEntities, VendorDetail> _VendorDetail;
-        public VendorMasterController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, VendorDetail> VendorDetail) : base(staticService, httpContextAccessor, "Vendor Details")
+        private readonly IDataService<DBEntities, InventoryUser> _VendorDetail;
+        public VendorMasterController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, InventoryUser> VendorDetail) : base(staticService, httpContextAccessor, "Vendor Details")
         {
             _VendorDetail = VendorDetail;
         }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> VendorDetails(SFGetVendorDetails sFGetVendorDetails)
         {
-            List<VendorDetail> vendorDetails = new List<VendorDetail>();
-
+            List<InventoryUser> vendorDetails = new List<InventoryUser>();
+           
             try
             {
-                ResJsonOutput result = await _staticService.FetchList<VendorDetail>(_VendorDetail, sFGetVendorDetails);
+                ResJsonOutput result = await _staticService.FetchList<InventoryUser>(_VendorDetail, sFGetVendorDetails);
                 if (result.Status.IsSuccess)
                 {
-                    vendorDetails = await FetchList<VendorDetail>(result, sFGetVendorDetails);
+                    vendorDetails = await FetchList<InventoryUser>(result, sFGetVendorDetails);
 
                 }
                 else
@@ -55,17 +55,21 @@ namespace App.AdminPortal.Controllers
                 Tuple<bool, string> tuple = ValidateModel(deviceType);
                 if(tuple.Item1)
                 {
-                    VendorDetail vendorDetail = new VendorDetail() { 
-                       VendorName = deviceType.VendorName,
+                    InventoryUser vendorDetail = new InventoryUser() { 
+                       FirstName = deviceType.VendorName,
                        CompanyName = deviceType.CompanyName,
-                       ContactNo1 = deviceType.ContactNo1,
+                       ContactNo = deviceType.ContactNo,
                        ContactNo2   = deviceType.ContactNo2,
                        EmailId  = deviceType.EmailId,
                        GSTNo = deviceType.GSTNo,
-                       VendorAddress = deviceType.VendorAddress
+                       Address = deviceType.VendorAddress,
+                       UserName = deviceType.VendorName,
+                       Password="Vendor@123",
+                       InventoryRoleId=4
                     };
                    await  _VendorDetail.Create(vendorDetail);
                     await _VendorDetail.Save();
+                     await _staticService._cacheRepo.InventoryUsersDetails(true);
                     HttpContext.Session.SetObject(ProgConstants.SuccMsg, "Data successfully save");
                 }
                 else

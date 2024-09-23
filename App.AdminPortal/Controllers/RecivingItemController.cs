@@ -60,7 +60,8 @@ namespace App.AdminPortal.Controllers
                             PoItemDetilId = model.PoItemDetilId,
                             UploadFile = FileName,
                             TotalUploadRecod = dataTable.Rows.Count,
-                            SuccessRecord = 0
+                            SuccessRecord = 0,
+                            CrdBy=LoginUserId
 
                         };
                         List<string> FileList = _staticService.UpdateFileName(bulkFileRecivingDetail);
@@ -96,7 +97,7 @@ namespace App.AdminPortal.Controllers
                       };
                         if (sendRequests.Any())
                         {
-                            List<RecivingItemRetunData> recivingItemRetuns = await _staticService.ExecuteSPAsync<DBEntities, RecivingItemRetunData>(new SFRecevingItemDetails() { SeriolNumberData = sendRequests, RecivingItemList = recivingItemList, BulkFileRecivingDetailId= bulkFileRecivingDetail.BulkFileRecivingDetailId });
+                            List<RecivingItemRetunData> recivingItemRetuns = await _staticService.ExecuteSPAsync<DBEntities, RecivingItemRetunData>(new SFRecevingItemDetails() { SeriolNumberData = sendRequests, RecivingItemList = recivingItemList, BulkFileRecivingDetailId= bulkFileRecivingDetail.BulkFileRecivingDetailId, InventoryUserId= LoginUserId });
 
                             foreach (var item in recivingItemRetuns)
                             {

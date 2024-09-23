@@ -1,6 +1,6 @@
-﻿@model Tuple<List<Root.Models.Tables.VendorDetail>, Root.Models.StoredProcedures.SFGetVendorDetails>
+﻿@model Tuple<List<Root.Models.Tables.InventoryUser>, Root.Models.StoredProcedures.SFGetVendorDetails>
 @{
-    Root.Models.Tables.VendorDetail _model = new Root.Models.Tables.VendorDetail();
+    Root.Models.Tables.InventoryUser _model = new Root.Models.Tables.InventoryUser();
     Root.Models.ViewModels.ViewVendorDetail _modeldata = new Root.Models.ViewModels.ViewVendorDetail();
     IndexModel indexModel = new IndexModel();
     indexModel.ControllerName = "VendorMaster";
@@ -129,7 +129,7 @@
                                             <input type="text" class="form-control" asp-for="Item2.VendorName" placeholder="Vendor Name">
 
                                             <input type="text" class="form-control" asp-for="Item2.CompanyName" placeholder="Company Name">
-                                            <input type="text" class="form-control" asp-for="Item2.ContactNo1" placeholder="Phone No">
+                                            <input type="text" class="form-control" asp-for="Item2.ContactNo" placeholder="Phone No">
                                             <input type="text" class="form-control" asp-for="Item2.EmailId" placeholder="EmailId">
                                             <input type="text" class="form-control" asp-for="Item2.GSTNo" placeholder="GSTNo">
                                             

@@ -1,0 +1,54 @@
+﻿@model Root.Models.ViewModels.DeviceMovementView
+
+
+
+
+<div class="modal custom-modal fade" id="DeviceMove" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <div class="form-header modal-header-title text-start mb-0">
+                    <h4 class="mb-0">Device Movement</h4>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form asp-action="AddVendorMaster" asp-controller="VendorMaster" method="post">
+                @Html.AntiForgeryToken();
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="InventoryRole.RoleName"></label>
+                                <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.InventoryRoles, "InventoryRoleId", "RoleName"))" asp-for="InventoryRole.RoleName" onchange="FillCustomChildDropDown('PoItemDetilId','GetGramPanchayatData', 'PoDetailId|PoDetailId');" tabindex="-1">
+                                    <option> select Po Number</option>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                               @*  <label asp-for="CompanyName"></label>
+                                <select class="form-control form-small select" asp-items="@(new SelectList(ViewBag.InventoryRoles, "InventoryRoleId", "RoleName"))" asp-for="InventoryRole.RoleName" onchange="FillCustomChildDropDown('PoItemDetilId','GetGramPanchayatData', 'PoDetailId|PoDetailId');" tabindex="-1">
+                                    <option> select Po Number</option>
+                                </select> *@
+                            </div>
+                        </div>
+                    </div>
+                  
+                  
+                 
+                   
+                </div>
+            
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-back cancel-btn me-2">Cancel</button>
+                    <button type="submit"  class="btn btn-primary paid-continue-btn">Add Vendor</button>
+                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary paid-continue-btn">ADD</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

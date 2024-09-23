@@ -27,7 +27,7 @@ namespace App.AdminPortal.Controllers
             List<GenerationDetail> generationDetails = (await _staticService._cacheRepo.GenerationDetails()).Where(x => x.DeviceTypeId == id).ToList();
             List<RAMDetail> rAMDetails = (await _staticService._cacheRepo.RAMDetails()).Where(x => x.DeviceTypeId == id).ToList();
             List<HardDiskDetail> hardDiskDetails = (await _staticService._cacheRepo.HardDiskDetails()).Where(x => x.DeviceTypeId == id).ToList();
-            List<VendorDetail> vendorDetails = (await _staticService._cacheRepo.VendorDetails());
+            List<InventoryUser> vendorDetails = (await _staticService._cacheRepo.InventoryUsersDetails()).Where(x=>x.InventoryRoleId==4).ToList();
             List<ProcurementType> procurementTypes = (await _staticService._cacheRepo.ProcurementTypes());
             ViewBag.DeviceType = (deviceTypes.Select(x => new { x.DeviceTypeId, x.DeviceName }).ToList());
             ViewBag.brandDetails = (brandDetails.Select(x => new { x.BrandDetailId, x.BrandName }).ToList());
@@ -39,7 +39,7 @@ namespace App.AdminPortal.Controllers
                 x.HardDiskDetailId,
                 HardDiskInfo = x.HardDiskSize + " " + x.HardDiskType
             }).ToList();
-            ViewBag.vendorDetails = (vendorDetails.Select(x => new { x.VendorDetailId, x.VendorName }).ToList());
+            ViewBag.vendorDetails = (vendorDetails.Select(x => new { x.InventoryUserId, x.CompanyName }).ToList());
             ViewBag.procurementTypes = (procurementTypes.Select(x => new { x.ProcurementTypeId, x.ProcurementNameType }).ToList());
 
             List<SelectListItem> QualityCheckStatus = new List<SelectListItem>();

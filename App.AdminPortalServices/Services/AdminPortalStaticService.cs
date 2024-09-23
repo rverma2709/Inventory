@@ -271,6 +271,7 @@ namespace App.AdminPortalServices.Services
                     if (sFPMSGetUserDetails.IsSuccess && userDetail != null)
                     {
                             model.InventoryUserId = userDetail.InventoryUserId;
+                            model.InventoryRoleId = userDetail.InventoryRoleId;
                             model.FirstName = userDetail.FirstName;
                             model.LastName = userDetail.LastName;
                             model.CompanyName = userDetail.CompanyName;

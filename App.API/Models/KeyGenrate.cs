@@ -21,13 +21,13 @@ namespace App.API.Models
         {
             
             var uniqueKey = Guid.NewGuid().ToString();
-            if(await _cacheService.KeyExists(CacheChannels.AdminPortal, "X-Unique-Key"))
+            if(await _cacheService.KeyExists(CacheChannels.AdminPortal, "apikey"))
             {
-                await _cacheService.Delete(CacheChannels.AdminPortal, "X-Unique-Key");
+                await _cacheService.Delete(CacheChannels.AdminPortal, "apikey");
             }
-            await _cacheService.Write(CacheChannels.AdminPortal, "X-Unique-Key", uniqueKey);
+            await _cacheService.Write(CacheChannels.AdminPortal, "apikey", uniqueKey);
             
-            context.HttpContext.Response.Headers.Add("X-Unique-Key", uniqueKey);
+            context.HttpContext.Response.Headers.Add("apikey", uniqueKey);
 
             
             await next();

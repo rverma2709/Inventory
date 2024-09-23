@@ -15,6 +15,7 @@ namespace Root.Models.StoredProcedures
     public class SFUserData
     {
         public long InventoryUserId { get; set; }
+        public long InventoryRoleId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? CompanyName { get; set; }
