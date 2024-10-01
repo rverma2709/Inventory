@@ -48,23 +48,24 @@ namespace Root.Services.Services
                     RouteData routeData = _httpContextAccessor?.HttpContext.GetRouteData();
 
                     string APIPath = routeData?.Values["controller"].ToString() + Path.DirectorySeparatorChar + routeData?.Values["action"].ToString();
-                    //model.ProcessingIP = GetServerIP();
-                    string logFilePath = _appConfig.LogPath + Path.DirectorySeparatorChar +
-                        _appConfig.tokenConfigs.ChannelId + Path.DirectorySeparatorChar +
-                        DateTime.Today.ToString("dd-MM-yyyy") + Path.DirectorySeparatorChar +
-                        DateTime.Now.ToString("HH") + Path.DirectorySeparatorChar + (_appConfig.tokenConfigs.ChannelId == Enums.Channels.API.ToString() || _appConfig.tokenConfigs.ChannelId == Enums.Channels.CronJobAPI.ToString() ? APIPath : _httpContextAccessor?.HttpContext?.Session?.Id)
-                         + Path.DirectorySeparatorChar +
-                        model.GetType().Name;
-                    CommonLib.CheckDir(logFilePath);
+                    #region log code comment
+                    //string logFilePath = _appConfig.LogPath + Path.DirectorySeparatorChar +
+                    //    _appConfig.tokenConfigs.ChannelId + Path.DirectorySeparatorChar +
+                    //    DateTime.Today.ToString("dd-MM-yyyy") + Path.DirectorySeparatorChar +
+                    //    DateTime.Now.ToString("HH") + Path.DirectorySeparatorChar + (_appConfig.tokenConfigs.ChannelId == Enums.Channels.API.ToString() || _appConfig.tokenConfigs.ChannelId == Enums.Channels.CronJobAPI.ToString() ? APIPath : _httpContextAccessor?.HttpContext?.Session?.Id)
+                    //     + Path.DirectorySeparatorChar +
+                    //    model.GetType().Name;
+                    //CommonLib.CheckDir(logFilePath);
 
-                    string uniqueGUID = _httpContextAccessor?.HttpContext?.TraceIdentifier == null ? Guid.NewGuid().ToString() : _httpContextAccessor?.HttpContext?.TraceIdentifier;
-                    //string uniqueGUID = _httpContextAccessor?.HttpContext?.Session.Id.IsNullString() == "" ? Guid.NewGuid().ToString() : _httpContextAccessor?.HttpContext?.Session.Id;
+                    //string uniqueGUID = _httpContextAccessor?.HttpContext?.TraceIdentifier == null ? Guid.NewGuid().ToString() : _httpContextAccessor?.HttpContext?.TraceIdentifier;
 
-                    logFilePath = System.IO.Path.Combine(logFilePath, uniqueGUID.Replace(":", "-") + ".json");
-                    using (StreamWriter _sw = new StreamWriter(logFilePath, true))
-                    {
-                        await _sw.WriteAsync(CommonLib.ConvertObjectToJson(model));
-                    }
+
+                    //logFilePath = System.IO.Path.Combine(logFilePath, uniqueGUID.Replace(":", "-") + ".json");
+                    //using (StreamWriter _sw = new StreamWriter(logFilePath, true))
+                    //{
+                    //    await _sw.WriteAsync(CommonLib.ConvertObjectToJson(model));
+                    //}
+                    #endregion
                 }
             }
         }

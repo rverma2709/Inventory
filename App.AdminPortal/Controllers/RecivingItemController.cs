@@ -23,10 +23,12 @@ namespace App.AdminPortal.Controllers
     {
         private readonly IDataService<DBEntities, BulkFileRecivingDetail> _BulkFileRecivingDetail;
         private readonly IDataService<DBEntities, PoDetail> _poDetail;
-        public RecivingItemController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, BulkFileRecivingDetail> BulkFileRecivingDetail, IDataService<DBEntities, PoDetail> poDetail) : base(staticService, httpContextAccessor, "PageModelName")
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public RecivingItemController(AdminPortalStaticService staticService, IHttpContextAccessor httpContextAccessor, IDataService<DBEntities, BulkFileRecivingDetail> BulkFileRecivingDetail, IDataService<DBEntities, PoDetail> poDetail, IWebHostEnvironment webHostEnvironment) : base(staticService, httpContextAccessor, "PageModelName")
         {
             _BulkFileRecivingDetail = BulkFileRecivingDetail;
             _poDetail = poDetail;
+            _webHostEnvironment = webHostEnvironment;
         }
         [TypeFilter(typeof(Authorize), Arguments = new object[] { false })]
         public async Task<IActionResult> Reciving()
@@ -43,9 +45,10 @@ namespace App.AdminPortal.Controllers
             Tuple<bool, string> tuple = ValidateModel(model);
             if (tuple.Item1)
             {
-                string FileName = await CommonLib.SaveFile(BulkImportDocument, _staticService._appConfig.uploadingConfigs.TempFolder);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                string FileName = await CommonLib.SaveFile(BulkImportDocument, wwwRootPath + CommonLib.DirectorySeparatorChar()+ "Docs"+ CommonLib.DirectorySeparatorChar()+ "BulkFileRecivingDetail");
 
-                DataTable dataTable = CommonLib.GetdataWithFile(_staticService._appConfig.uploadingConfigs.TempFolder +  CommonLib.DirectorySeparatorChar() + FileName);
+                DataTable dataTable = CommonLib.GetdataWithFile(wwwRootPath + CommonLib.DirectorySeparatorChar() + "Docs" + CommonLib.DirectorySeparatorChar() + "BulkFileRecivingDetail" +  CommonLib.DirectorySeparatorChar() + FileName);
 
                 dataTable = CommonLib.EmptyRowRemoveCode(dataTable);
                 if (dataTable.Rows.Count > 0 && model.RemainingQuantity > dataTable.Rows.Count)
@@ -113,7 +116,7 @@ namespace App.AdminPortal.Controllers
                         }
                         _BulkFileRecivingDetail.Update(bulkFileRecivingDetail);
                         await _BulkFileRecivingDetail.Save();
-                        //await UpdateAnnexureDataService(annexureDetail);
+                      
                         HttpContext.Session.SetObject(ProgConstants.SuccMsg, "success");
 
 
@@ -234,7 +237,8 @@ namespace App.AdminPortal.Controllers
                     var excelBytes = package.GetAsByteArray();
 
                     // Save the Excel file to the specified file path
-                    System.IO.File.WriteAllBytes(_staticService._appConfig.uploadingConfigs.Location + CommonLib.DirectorySeparatorChar() + ResponseFilePath, excelBytes);
+                    string wwwRootPath = _webHostEnvironment.WebRootPath +CommonLib.DirectorySeparatorChar()+ "Docs";
+                    System.IO.File.WriteAllBytes(wwwRootPath + CommonLib.DirectorySeparatorChar()+ ResponseFilePath, excelBytes);
                 }
             }
             catch (Exception ex)
