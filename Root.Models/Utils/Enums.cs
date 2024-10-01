@@ -23,7 +23,8 @@ namespace Root.Models.Utils
             MINFILSIZ,
             HARMFULCHAR,
             NOTFND,
-            INVUSER
+            INVUSER,
+            OTPFLD
 
         }
     }

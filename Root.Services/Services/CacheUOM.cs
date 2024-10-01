@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Root.Models.Application.Tables;
 using Root.Models.StoredProcedures;
 using Root.Models.Tables;
 using Root.Models.Utils;
@@ -51,37 +52,38 @@ namespace Root.Services.Services
             try
             {
                 List<T>? lst;
-                string keyName = model + (stateId.HasValue ? ":" + stateId.IsNullString() : "");
-                if (!update)
-                {
-                    lst = await _memoryCache.GetOrCreateAsync(channelId.ToString() + "." + keyName, async (cacheEntry) =>
-                    {
-                        cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(2);
-                        List<T> data;
-                        if (await _cacheService.KeyExists(channelId, keyName))
-                        {
-                            Debug.WriteLine("GetMastersData-Redis | " + keyName + " | 2 | " + stopwatch.ElapsedMilliseconds);
-                            data = await _cacheService.Read<List<T>>(channelId, keyName);
-                        }
-                        else
-                        {
-                            data = await UpdateMaster<T>(model, stateId, ids, channelId);
-                            Debug.WriteLine("GetMastersData-DB | " + keyName + " | 3 | " + stopwatch.ElapsedMilliseconds.ToString());
-                        }
-                        Debug.WriteLine("GetMastersData-Memory-DB | " + keyName + " | 4 | " + stopwatch.ElapsedMilliseconds);
-                        if (data is null)
-                        {
-                            cacheEntry.Dispose();
-                            data = new List<T>();
-                        }
+                //string keyName = model + (stateId.HasValue ? ":" + stateId.IsNullString() : "");
+                //if (!update)
+                //{
+                //    lst = await _memoryCache.GetOrCreateAsync(channelId.ToString() + "." + keyName, async (cacheEntry) =>
+                //    {
+                //        cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(2);
+                //        List<T> data;
+                //        if (await _cacheService.KeyExists(channelId, keyName))
+                //        {
+                //            Debug.WriteLine("GetMastersData-Redis | " + keyName + " | 2 | " + stopwatch.ElapsedMilliseconds);
+                //            data = await _cacheService.Read<List<T>>(channelId, keyName);
+                //        }
+                //        else
+                //        {
+                //            data = await UpdateMaster<T>(model, stateId, ids, channelId);
+                //            Debug.WriteLine("GetMastersData-DB | " + keyName + " | 3 | " + stopwatch.ElapsedMilliseconds.ToString());
+                //        }
+                //        Debug.WriteLine("GetMastersData-Memory-DB | " + keyName + " | 4 | " + stopwatch.ElapsedMilliseconds);
+                //        if (data is null)
+                //        {
+                //            cacheEntry.Dispose();
+                //            data = new List<T>();
+                //        }
 
-                        return data;
-                    }).ConfigureAwait(false);
-                }
-                else
-                {
-                    lst = await UpdateMaster<T>(model, stateId, ids, channelId);
-                }
+                //        return data;
+                //    }).ConfigureAwait(false);
+                //}
+                //else
+                //{
+                //    lst = await UpdateMaster<T>(model, stateId, ids, channelId);
+                //}
+                lst = await UpdateMaster<T>(model, stateId, ids, channelId);
                 return lst;
             }
             catch (Exception ex)
@@ -92,7 +94,7 @@ namespace Root.Services.Services
 
         private protected async Task<List<T>> UpdateMaster<T>(string model, long? stateId = null, List<RequestById> ids = null, CacheChannels channelId = CacheChannels.Core) where T : class
         {
-            string keyName = model + (stateId.HasValue ? ":" + stateId.IsNullString() : "");
+           // string keyName = model + (stateId.HasValue ? ":" + stateId.IsNullString() : "");
             GC.Collect(0);
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
@@ -102,10 +104,10 @@ namespace Root.Services.Services
                 spGetMastersForCache.StateId = stateId;
                 spGetMastersForCache.Ids = ids;
                 List<T> lst = await _commonService.ExecuteSPAsync<DBEntities, T>(spGetMastersForCache);
-                Debug.WriteLine("UpdateMaster-Read-DB | " + keyName + " | 1 | " + stopwatch.ElapsedMilliseconds);
-                string jsonList = CommonLib.ConvertObjectToJson(lst);
-                await _cacheService.Write(channelId, keyName, CommonLib.ConvertObjectToJson(lst));
-                Debug.WriteLine("UpdateMaster-Write-Redis | " + keyName + " | 2 | " + stopwatch.ElapsedMilliseconds);
+                //Debug.WriteLine("UpdateMaster-Read-DB | " + keyName + " | 1 | " + stopwatch.ElapsedMilliseconds);
+                //string jsonList = CommonLib.ConvertObjectToJson(lst);
+                //await _cacheService.Write(channelId, keyName, CommonLib.ConvertObjectToJson(lst));
+                //Debug.WriteLine("UpdateMaster-Write-Redis | " + keyName + " | 2 | " + stopwatch.ElapsedMilliseconds);
                 return lst;
             }
             catch (Exception ex)
@@ -170,6 +172,7 @@ namespace Root.Services.Services
         public async Task<List<VendorDetail>> VendorDetails(bool update = false) { return await GetValuesAsync<VendorDetail>(update, null); }
         public async Task<List<InventoryUser>> InventoryUsersDetails(bool update = false) { return await GetValuesAsync<InventoryUser>(update, null); }
         public async Task<List<InventoryRole>> InventoryUsersRoles(bool update = false) { return await GetValuesAsync<InventoryRole>(update, null); }
+        public async Task<List<NotificationTemplate>> NotificationTemplatesList(bool update = false) { return await GetValuesAsync<NotificationTemplate>(update); }
 
         public void Dispose()
         {

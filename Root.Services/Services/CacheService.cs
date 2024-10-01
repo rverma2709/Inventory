@@ -16,22 +16,9 @@ namespace Root.Services.Services
                 () => ConnectionMultiplexer.Connect(configurationOption));
         public CacheService()
         {
-            //Lazy<ConnectionMultiplexer> lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
-            //{
-            //      return ConnectionMultiplexer.Connect(conn);
-            //});
-
-            //_db = lazyConnection.Value.GetDatabase();
-            _db = Connection.Value.GetDatabase();
-            //if (channelConfigs == null)
-            //{
-            // string cacheConfigs = _db.StringGet(parentChannelID + ":Config");
-            //if (cacheConfigs == null)
-            //{
-            //    throw new Exception("Config: Does not exists or empty(" + parentChannelID + ").");
-            //}
-            //channelConfigs = CommonLib.ConvertJsonToObject<List<ChannelConfig>>(cacheConfigs);
-            //}
+            
+           // _db = Connection.Value.GetDatabase();
+            
         }
         private ChannelConfig GetConfig(CacheChannels channelId)
         {

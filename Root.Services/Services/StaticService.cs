@@ -6,6 +6,7 @@ using Root.Models.Application.Tables;
 using Root.Models.Config;
 using Root.Models.LogTables;
 using Root.Models.StoredProcedures;
+using Root.Models.Tables;
 using Root.Models.Utils;
 using Root.Models.ViewModels;
 using Root.Services.DBContext;
@@ -18,6 +19,7 @@ using System.Net.Mime;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Root.Services.Services
@@ -138,6 +140,18 @@ namespace Root.Services.Services
             }
         }
 
+        public string GenerateOTP() => GenerateKey(6);
+
+        public string GenerateKey(int length)
+        {
+            string key = Regex.Replace(Guid.NewGuid().ToString(), "[^0-9]+", "");
+            if (key.Length < length)
+            {
+                key = key + GenerateKey(length - key.Length);
+            }
+            key = key.Substring(0, length);
+            return key;
+        }
         public async Task<bool> ExecuteSPtoCSVAsync<TDbContext, T>(object obj, string FileName, bool appendHeader = true) where TDbContext : DbContext
         {
             try
@@ -186,8 +200,8 @@ namespace Root.Services.Services
                 model.MobileNo = model.MobileNo.IsNullString();
                 model.EmailId = model.EmailId.IsNullString();
 
-                //NotificationTemplate template = (await _cacheRepo.NotificationTemplatesList()).Where(x => x.NotificationTemplateCode == model.TemplateCode && x.Disabled == false)?.FirstOrDefault();
-                NotificationTemplate template = null;
+              //  List<NotificationTemplate> templateq = (await _cacheRepo.NotificationTemplatesList(true)).Where(x => x.NotificationTemplateCode == model.TemplateCode).ToList();
+                NotificationTemplate template = (await _cacheRepo.NotificationTemplatesList()).Where(x => x.NotificationTemplateCode == model.TemplateCode && x.Disabled == false)?.FirstOrDefault();
 
                 model.notificationTemplate = template;
                 if (template != null)
@@ -195,21 +209,18 @@ namespace Root.Services.Services
                     if (template.IsSMS && model.MobileNo != "")
                     {
                         template.SMSFormat = CommonLib.ConvertTemplateString(template.SMSFormat, template.AvailableValues, model.Args);
-                        //if (template.IsOTPSMS && _appConfig.tokenConfigs.ChannelId == Enums.Channels.Customer.ToString())
-                        //{
-                        //	template.SMSFormat = template.SMSFormat + " " + _appConfig.otpConfigs.AutoReadCode;
-                        //}
+                       
                         SMSLog smslog = await SendSMS(template, model.MobileNo);
                         smslog.NotificationTemplateId = template.NotificationTemplateId;
                         smslog.TemplateCode = template.NotificationTemplateCode;
                         smslog.Scheme = Enums.ProjectScheme.PMVishwakarma.ToString();
                         await SaveLog(smslog);
                         result.Status.IsSuccess = true;//This is specific to SMS notification
-                        if (result.Status.IsSuccess == true)
-                        {
-                            await _smsLogService.Create(smslog);
-                            await _smsLogService.Save();
-                        }
+                        //if (result.Status.IsSuccess == true)
+                        //{
+                        //    await _smsLogService.Create(smslog);
+                        //    await _smsLogService.Save();
+                        //}
                     }
 
                     if (template.IsEmail == true && model.EmailId != "")
@@ -678,7 +689,7 @@ namespace Root.Services.Services
 
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
-                await client.SendMailAsync(mailMessage);
+                //await client.SendMailAsync(mailMessage);
                 emaillog.Status = true;
             }
             catch (Exception ex)

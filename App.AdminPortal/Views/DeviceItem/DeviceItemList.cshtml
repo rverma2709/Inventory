@@ -3,7 +3,7 @@
 @{
     
     Root.Models.ViewModels.DeviceMovementView deviceMovementView = new Root.Models.ViewModels.DeviceMovementView();
-    deviceMovementView.InventoryRoleId = _staticService.LoginUser.InventoryRoleId;
+    deviceMovementView.ReciverInventoryRoleId = _staticService.LoginUser.InventoryRoleId;
     ViewBag.Title = ViewBag.PageModelName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     IndexModel indexModel = new IndexModel();
@@ -27,6 +27,7 @@
                 <div class="page-header">
                         <div class="content-page-header">
                             <h5>Device Item List</h5>
+
                         </div>
                     
                         <div class="list-btn">
@@ -108,7 +109,7 @@
     var DuplicateCalls = new Array;
     function FillCustomChildDropDown(id, t, a) {
 
-        var ServerPath = "http://localhost:5127/";
+        
 
         if ($('#' + id).length == 0)
             return;
@@ -172,10 +173,18 @@
             type: 'POST',
             data: data,
             success: function (response) {
+               
                 $('#tb').html(response);
+                var noRecordsRow = $('#tb').find('tr').find('td:contains("No records found")');
+
+                if (noRecordsRow.length > 0) {
+                    toastr.warning('No records found in the table.');
+                } else {
+                    toastr.success('Table data is available.');
+                }
             },
             error: function (error) {
-                alert('An error occurred: ' + error.responseText);
+                toastr.error('An error occurred: ' + error.responseText);
             }
         });
     }

@@ -399,6 +399,90 @@ namespace App.AdminPortalServices.Services
             }
             return result;
         }
+        public async Task<ResJsonOutput> SendOTP(OTPbyMobile model)
+        {
+            ResJsonOutput result = new ResJsonOutput();
+            try
+            {
+
+                DateTime Dt = DateTime.Now;
+
+                OTP otp = new OTP
+                {
+                    ChannelId = _appConfig.tokenConfigs.ChannelId,
+                    LoginId = model.LoginId,
+                    OTPFor = model.OTPFor,
+                    //MobileNo = (_appConfig.smsConfigs.Mode) ? model.MobileNo : _appConfig.smsConfigs.DefaultNumber, //model.MobileNumber;
+                    MobileNo = model.MobileNo,
+                    EmailId = model.EmailId,
+                    ValidFrom = Dt,
+                    ValidUpto = Dt.AddMinutes(_appConfig.otpConfigs.Expiry),
+
+                    OTPNumber = (model.LoginId == _appConfig.otpConfigs.TestRefId && model.LoginId.IsNullString() != "" && _appConfig.otpConfigs.TestRefId.IsNullString() != "") ? new string(_appConfig.otpConfigs.DefaultOTP, _appConfig.otpConfigs.Length) : GenerateOTP()
+                };
+
+                Dictionary<string, string> Args = new Dictionary<string, string>() {
+                    { "OTP", otp.OTPNumber } ,
+                    { "ExpiryMinutes", _appConfig.otpConfigs.Expiry.ToString() }
+                };
+
+                if (model.Args == null)
+                {
+                    model.Args = new Dictionary<string, string>();
+                }
+                foreach (var item in Args)
+                {
+                    model.Args.Add(item.Key, item.Value);
+                }
+
+                MBNotification notification = new MBNotification()
+                {
+                    TemplateCode = model.OTPFor,
+                    Args = { { "OTP", otp.OTPNumber }, { "Scheme", _appConfig.smsConfigs.SchemeName.ToString() } },
+                    RefId = model.LoginId,
+                    ChannelId = otp.ChannelId,
+                    MobileNo = model.MobileNo,
+                    EmailId = model.EmailId
+                };
+                ResJsonOutput NotficationResult = new ResJsonOutput();
+                NotficationResult = await SendNotification(notification);
+
+                otp.Status = NotficationResult.Status.IsSuccess;
+
+                if (otp.Status == true)
+                {
+                    await _otpDataService.Create(otp);
+                    await _otpDataService.Save();
+
+                    result.Status.IsSuccess = true;
+                }
+                else
+                {
+                    result.Status.IsSuccess = false;
+                    result.Status.StatusCode = RootEnums.StatusCodes.OTPFLD.ToString();
+                    result.Status.Message = await GetStatusMessage(result.Status.StatusCode);
+                }
+                //await _staticService.Commit(); // do not move this code to above this lines, it has some reason
+
+                if (otp.Status == true)
+                {
+                    OTPToken OTPTokenData = new OTPToken() { RefCode = otp.RefCode.ToString(), Expiry = _appConfig.otpConfigs.Expiry, ExpiryTime = (DateTime)otp.ValidUpto };
+                    result.Data = OTPTokenData;
+
+                    //await _cacheService.Write(CacheChannels.Website, "OTP:" + model.MobileNo + "-" + model.OTPFor, CommonLib.ConvertObjectToJson(OTPTokenData), _appConfig.otpConfigs.Expiry);
+                    string OtpKey = otp.RefCode.ToString() + "-" + otp.MobileNo;
+                    await _cacheService.Write(CacheChannels.AdminPortal, "OTP:" + OtpKey, CommonLib.ConvertObjectToJson(OTPTokenData), _appConfig.otpConfigs.Expiry);
+                    await _cacheService.Write(CacheChannels.AdminPortal, "OTP" , otp.OTPNumber, _appConfig.otpConfigs.Expiry);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        
         //public async Task<bool> ResetPassword(ForgotUserPassword model)
         //{
         //    bool flag = false;

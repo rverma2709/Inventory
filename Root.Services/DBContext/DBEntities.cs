@@ -39,5 +39,7 @@ namespace Root.Services.DBContext
         public DbSet<AllowedFile> AllowedFiles { get; set; }
         public DbSet<PoDetail> PoDetails {  get; set; }
         public DbSet<PoItemDetail> PoItemDetails { get; set; }
+        public DbSet<OTP> OTPs { get; set; }
+        public DbSet<EmailLog> EmailLogs { get; set; }
     }
 }

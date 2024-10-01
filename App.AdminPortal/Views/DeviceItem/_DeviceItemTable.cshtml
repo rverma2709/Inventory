@@ -111,26 +111,85 @@
 
 </script>
 <script>
-    function checkboxdata() {
+    function FormsubmitData() {
         var Bulkcheckboxdata = [];
-
-
-        // Iterate through checked checkboxes  issameasaadhaaraddress
+       
+        var deviceMovementView = {
+            ReciverInventoryRoleId: $("#ReciverInventoryRoleId").val(),
+            ReciverUserId: $('#ReciverUserId').val(),
+            SendDate: $('#SendDate').val(),
+            QCStatus: $('#QCStatus').val(),
+            QCUserRemarks: $('#QCUserRemarks').val()
+          
+        };
+      
+       
+       
         $('.checkbox:checked').each(function () {
             var row = $(this).closest('tr');
             var receivingDeviceDetailId = row.data('receivingdevicedetailid');
             
-            alert(receivingDeviceDetailId);
+           
 
             var record = {
-                ReceivingDeviceDetailId: receivingDeviceDetailId,
+                Id: receivingDeviceDetailId,
              
             };
 
             Bulkcheckboxdata.push(record);
         });
-        console.log(Bulkcheckboxdata);
+        var data = {
+            DeviceId: Bulkcheckboxdata,
+            deviceMovementView: deviceMovementView
+        }
+       
+        $.ajax({
+            url: '@Url.Action("DeviceDataMove", "DeviceItem")',  
+            method: 'POST',
+            
+            data: data,
+            success: function (response) {
+                if (response.status.isSuccess == true) {
+                    toastr.success(response.status.message);
+                    window.location.href = '@Url.Action("DeviceItemList", "DeviceItem")';
+                    
+
+                }
+                else {
+                    toastr.error(response.status.message);
+                    $("#DeviceMove").hide();
+                   
+
+                }
+
+            }
+        });
     
+    }
+
+    function Otpsend() {
+        $.ajax({
+            url: '@Url.Action("OtpSend", "DeviceItem")',
+            method: 'POST',
+            success: function (response) {
+                if (response.status.isSuccess == true) {
+                    toastr.success(response.status.message);
+                    $("#DeviceMove").hide();
+                    $("#loginmodal").addClass('show');
+                    $("#loginmodal").css("display", "block");
+                   // window.location.href = '@Url.Action("DeviceItemList", "DeviceItem")';
+
+
+                }
+                else {
+                    toastr.error(response.status.message);
+                    $("#DeviceMove").hide();
+
+
+                }
+
+            }
+        });
     }
    
 </script>

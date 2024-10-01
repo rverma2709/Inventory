@@ -2,6 +2,7 @@
 {
     public class CommonAppConfig
     {
+        public OTPConfigs otpConfigs { get; set; } = new OTPConfigs();
         public TokenConfig tokenConfigs { get; set; } = new TokenConfig();
         public string LogPath { get; set; }
         public DBConfig dbconfig { get; set; } = new DBConfig();
@@ -10,6 +11,15 @@
         public UploadingConfigs uploadingConfigs { get; set; } = new UploadingConfigs();
         public SessionConfigs sessionConfigs { get; set; } = new SessionConfigs();
         public List<ChannelConfig> ChannelConfig { get; set; } = new List<ChannelConfig>();
+    }
+    public class OTPConfigs
+    {
+        public int Length { get; set; }
+        public int Expiry { get; set; }
+        public int Attempts { get; set; }
+        public char DefaultOTP { get; set; }
+        public bool Mode { get; set; }
+        public long TestRefId { get; set; }
     }
     public class ChannelConfig
     {

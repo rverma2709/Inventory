@@ -53,19 +53,19 @@ builder.Services.AddTransient<IViewRenderService, ViewRenderService>();
 //builder.Services.AddTransient<IAadhaarService, AadhaarService>();
 //builder.Services.AddTransient<IGPActivationService, GPActivationService>();
 string RedisConnectionString = string.Empty;
-if (myConfig.RedisConfig.IsEncConnectionString)
-{
-    RedisConnectionString = CommonLib.GetRedisPlainConnectionString(myConfig.RedisConfig.RedisConnectionString);
-}
-else
-{
-    RedisConnectionString = myConfig.RedisConfig.RedisConnectionString;
-}
-ConfigurationOptions configurationOption = ConfigurationOptions.Parse(RedisConnectionString);
-configurationOption.ClientName = myConfig.tokenConfigs.ChannelId;
-CacheService.configurationOption = configurationOption;
-CacheService.channelConfigs = myConfig.ChannelConfig;
-CacheService.parentChannelID = CacheService.parentChannelID = (CacheChannels)Enum.Parse(typeof(CacheChannels), myConfig.tokenConfigs.ChannelId, true);
+//if (myConfig.RedisConfig.IsEncConnectionString)
+//{
+//    RedisConnectionString = CommonLib.GetRedisPlainConnectionString(myConfig.RedisConfig.RedisConnectionString);
+//}
+//else
+//{
+//    RedisConnectionString = myConfig.RedisConfig.RedisConnectionString;
+//}
+//ConfigurationOptions configurationOption = ConfigurationOptions.Parse(RedisConnectionString);
+//configurationOption.ClientName = myConfig.tokenConfigs.ChannelId;
+//CacheService.configurationOption = configurationOption;
+//CacheService.channelConfigs = myConfig.ChannelConfig;
+//CacheService.parentChannelID = CacheService.parentChannelID = (CacheChannels)Enum.Parse(typeof(CacheChannels), myConfig.tokenConfigs.ChannelId, true);
 string ChannelID = myConfig.tokenConfigs.ChannelId;
 builder.Services.AddSession(options =>
 {
