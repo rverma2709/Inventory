@@ -17,9 +17,8 @@ namespace Root.Models.Tables
         public string UserName { get; set; }
         public string? ContactNo { get; set; }
         public string? EmailId { get; set; }
-
         public string? DeviceType { get; set; }
-        public long? Quantity { get; set; }
+        public string? Quantity { get; set; }
 
     }
 }

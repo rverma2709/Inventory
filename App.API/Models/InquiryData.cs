@@ -6,7 +6,7 @@
         public string? contactNo { get; set; }
         public string? email { get; set; }
         public string? deviceType { get; set; }
-        public long? quantity {  get; set; }
+        public string? quantity {  get; set; }
 
     }
 }
