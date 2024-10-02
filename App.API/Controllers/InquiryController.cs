@@ -43,5 +43,23 @@ namespace App.API.Controllers
             
             return resJsonOutput;
         }
+
+        [Route("GetInquiryData"), HttpPost]
+        public async Task<ResJsonOutput> GetInquiryData()
+        {
+            ResJsonOutput resJsonOutput = new ResJsonOutput();
+            try
+            {
+               List<InquiryDetail> inquiryDetails= _InquiryDetail.GetAll().ToList();
+                resJsonOutput.Data = inquiryDetails;
+                resJsonOutput.Status.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                resJsonOutput.Status.IsSuccess = false;
+            }
+
+            return resJsonOutput;
+        }
     }
 }
