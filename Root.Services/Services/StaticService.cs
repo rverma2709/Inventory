@@ -646,7 +646,7 @@ namespace Root.Services.Services
                 SmtpClient client = new SmtpClient(_appConfig.emailConfigs.SMTPAddress)
                 {
                     Port = _appConfig.emailConfigs.SMTPPort,
-                    UseDefaultCredentials = _appConfig.emailConfigs.UseDefaultCredentials,
+                    //UseDefaultCredentials = _appConfig.emailConfigs.UseDefaultCredentials,
                     EnableSsl = _appConfig.emailConfigs.EnableSsl
                 };
 
@@ -689,7 +689,7 @@ namespace Root.Services.Services
 
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
-                //await client.SendMailAsync(mailMessage);
+                await client.SendMailAsync(mailMessage);
                 emaillog.Status = true;
             }
             catch (Exception ex)

@@ -168,8 +168,14 @@
     }
 
     function Otpsend() {
+        $('#preloader').show();
+        var data = {
+            ReciverUserId: $('#ReciverUserId').val()
+
+        }
         $.ajax({
             url: '@Url.Action("OtpSend", "DeviceItem")',
+            data: data,
             method: 'POST',
             success: function (response) {
                 if (response.status.isSuccess == true) {
@@ -177,13 +183,16 @@
                     $("#DeviceMove").hide();
                     $("#loginmodal").addClass('show');
                     $("#loginmodal").css("display", "block");
+                    $('#preloader').hide();
                    // window.location.href = '@Url.Action("DeviceItemList", "DeviceItem")';
 
 
                 }
                 else {
                     toastr.error(response.status.message);
+
                     $("#DeviceMove").hide();
+                    $('#preloader').hide();
 
 
                 }

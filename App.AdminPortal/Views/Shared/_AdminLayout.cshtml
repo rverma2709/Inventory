@@ -10,6 +10,44 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="600">
     <title>Rentfoxxy -Admin</title>
+    <style>
+        /* Preloader styling */
+        #preloader {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            text-align: center;
+        }
+
+            #preloader .loader {
+                border: 16px solid #f3f3f3; /* Light grey */
+                border-top: 16px solid #3498db; /* Blue */
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                animation: spin 2s linear infinite;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
 
     <link rel="shortcut icon" href="~/assets/img/l.png">
     <environment names="Development,Staging,Production">
@@ -38,6 +76,9 @@
     </environment>
 </head>
 <body>
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
 
     <div class="main-wrapper">
 
@@ -86,6 +127,27 @@
         <script src="~/assets/js/script.js" type="3e9251f4ed4a5ed502c65af6-text/javascript"></script>
         <script src="../../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="3e9251f4ed4a5ed502c65af6-|49" defer></script>
     </environment>
+    
+    <script>
+            // This will run when any button is clicked
+            document.addEventListener('click', function (e) {
+                if (e.target.tagName === 'BUTTON') {
+                    // Show the preloader
+                    document.getElementById('preloader').style.display = 'block';
+                }
+            });
+    </script>
+    <script>
+        // This will run when any button or anchor (<a>) is clicked
+        $(document).on('click', 'button, a', function () {
+            // Show the preloader
+            $('#preloader').show();
+            setTimeout(function () {
+                $('#preloader').hide();
+            }, 500);
+        });
+    </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

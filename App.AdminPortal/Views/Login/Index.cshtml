@@ -8,6 +8,7 @@
         color: red;
     }
 </style>
+
 <div class="container">
     <img class="img-fluid logo-dark mb-2 logo-color" src="assets/img/logo.webp" alt="Logo">
     <img class="img-fluid logo-light mb-2" src="assets/img/logo2-white.png" alt="Logo">
@@ -57,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-lg  btn-primary w-100" type="submit">Login</button>
+                    <button id="loginButton" class="btn btn-lg  btn-primary w-100" type="submit">Login</button>
                   
 
                     <div class="text-center dont-have">Don't have an account yet? <a href="register.html">Register</a></div>
@@ -68,20 +69,33 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+@* <script>
     $().ready(() => {
         
         $('form').on('submit', () => {
-           
+            $('#preloader').show();
             if ($('form').valid()) {
-               
+
+                $('#preloader').hide();
                 return true;
             }
             else {
-
+                $('#preloader').hide();
                 return false;
             }
         });
     });
 
+</script> *@
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginButton = document.getElementById('loginButton');
+        const preloader = document.getElementById('preloader');
+
+        loginButton.addEventListener('click', function () {
+            // Show the preloader
+            preloader.style.display = 'block';
+        });
+    });
 </script>

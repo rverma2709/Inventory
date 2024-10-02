@@ -163,6 +163,7 @@
 </script>
 <script>
     function OnChangeSelect() {
+        $('#preloader').show();
         var data = {
             PoDetailId: $("#PoDetailId").val(),
             PoItemDetilId: $("#PoItemDetilId").val()
@@ -179,8 +180,10 @@
 
                 if (noRecordsRow.length > 0) {
                     toastr.warning('No records found in the table.');
+                    $('#preloader').hide();
                 } else {
                     toastr.success('Table data is available.');
+                    $('#preloader').hide();
                 }
             },
             error: function (error) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,5 +57,7 @@ namespace Root.Models.Tables
         public string? InventoryPermissionIds { get; set; }
         public string? GSTNo { get; set; }
         public string? Address {  get; set; }
+        [ForeignKey("InventoryRoleId")]
+        public virtual InventoryRole InventoryRole { get; set; }
     }
 }

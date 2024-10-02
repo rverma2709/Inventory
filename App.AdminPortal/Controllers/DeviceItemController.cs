@@ -8,8 +8,8 @@ using Root.Models.Utils;
 using Root.Models.ViewModels;
 using Root.Services.DBContext;
 using Root.Services.Interfaces;
-using Root.Services.Services;
-using System.Collections.Generic;
+using System.Net.Mail;
+using System.Net;
 
 namespace App.AdminPortal.Controllers
 {
@@ -76,12 +76,13 @@ namespace App.AdminPortal.Controllers
             return DDData;
         }
         [HttpPost]
-        public async Task<ResJsonOutput> OtpSend()
+        public async Task<ResJsonOutput> OtpSend(long ? ReciverUserId)
         {
+            InventoryUser inventoryUser =await _InventoryUser.GetSingle(x => x.InventoryUserId == ReciverUserId);
             ResJsonOutput jsonOutput = new ResJsonOutput();
             OTPbyMobile oTPbyMobile = new OTPbyMobile();
-            oTPbyMobile.EmailId = "himanshubest09@gmail.com";
-            oTPbyMobile.MobileNo = "7818959705";
+            oTPbyMobile.EmailId = inventoryUser.EmailId;
+            oTPbyMobile.MobileNo = inventoryUser.ContactNo;
             oTPbyMobile.OTPFor = "OTP";
             jsonOutput =await _staticService.SendOTP(oTPbyMobile);
             if(jsonOutput.Status.IsSuccess)
@@ -97,11 +98,13 @@ namespace App.AdminPortal.Controllers
             return jsonOutput;
         }
         [HttpPost]
-        public async Task<ResJsonOutput> OtpVerification(long? OTP)
+        public async Task<ResJsonOutput> OtpVerification(long? OTP, long? ReciverUserId)
         {
             ResJsonOutput jsonOutput = new ResJsonOutput();
+            //bool result = await _staticService.ExecuteScalarAsync<DBEntities, bool>(new SFOtpVarification() { InventoryUserId = ReciverUserId, OTP = OTP });
+            jsonOutput.Status.IsSuccess =  await _staticService.ExecuteScalarAsync<DBEntities, bool>(new SFOtpVarification() { InventoryUserId=ReciverUserId,OTP=OTP});
 
-            if (OTP == Convert.ToInt64(await _staticService._cacheService.Read(CacheChannels.AdminPortal, "OTP")))
+            if (jsonOutput.Status.IsSuccess)
             {
                 jsonOutput.Status.IsSuccess=true;
                 jsonOutput.Status.Message = "Otp Verification Suceccefully";

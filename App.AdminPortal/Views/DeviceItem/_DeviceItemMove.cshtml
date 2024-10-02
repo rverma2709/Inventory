@@ -179,9 +179,10 @@
 <script>
            
     function OtpVerification() {
-
+        $('#preloader').show();
         var data = {
-            OTP: $("#OTP").val()
+            OTP: $("#OTP").val(),
+            ReciverUserId: $('#ReciverUserId').val()
           
         }
         $.ajax({
@@ -193,12 +194,12 @@
                 if (response.status.isSuccess == true) {
                     toastr.success(response.status.message);
                     FormsubmitData();
-
+                    $('#preloader').hide();
 
                 }
                 else {
                     toastr.error(response.status.message);
-                  
+                    $('#preloader').hide();
 
 
                 }

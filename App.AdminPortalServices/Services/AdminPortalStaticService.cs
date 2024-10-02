@@ -21,10 +21,12 @@ namespace App.AdminPortalServices.Services
         public readonly AppConfig _appConfig;
         public long LoginUserId;
         public InventoryUser LoginUser;
+        public InventoryRole inventoryRole;
         public List<VMAllowedCMSPermission> LoginUserPermissions;
         public DateTime Dt;
 
         private readonly IDataService<DBEntities, InventoryUser> _DataService;
+        private readonly IDataService<DBEntities, InventoryRole> _InventoryRole;
         private protected readonly IDataService<DBEntities, OTP> _otpDataService;
         private readonly ITempDataDictionaryFactory _tempDataDictionaryFactory;
         long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -40,11 +42,12 @@ namespace App.AdminPortalServices.Services
 
             CacheUOM cacheRepo,
              IDataService<DBEntities, SMSLog> smsLogService,
-
-            IDataService<DBEntities, InventoryUser> cmsuserDataService,
+            IDataService<DBEntities, InventoryRole> InventoryRole,
+        IDataService<DBEntities, InventoryUser> cmsuserDataService,
             IDataService<DBEntities, OTP> otpDataService,
             ITempDataDictionaryFactory tempDataDictionaryFactory,
            IDataService<DBEntities, EmailLog> emailLogService,
+
 
         IViewRenderService viewRenderService) : base(
                 configuration,
@@ -62,6 +65,7 @@ namespace App.AdminPortalServices.Services
             _tempDataDictionaryFactory = tempDataDictionaryFactory;
 
             Dt = DateTime.Now;
+            _InventoryRole= InventoryRole;
             LoginUser = GetLoginUser();
             _otpDataService = otpDataService;
             Initiated = true;
@@ -249,9 +253,7 @@ namespace App.AdminPortalServices.Services
                 InventoryUser model = new InventoryUser();
                 bool CreateUserSession = false;
 
-                //List<InventoryRole> Roles = await _cacheRepo.CMSRolesList();
-                //List<InventoryRole> Roles = null;
-                //InventoryRole loginCMSRole = Roles.FirstOrDefault(x => x.InventoryRoleId == loginModel.InventoryRoleId);
+               
 
                 if (loginModel == null)
                 {
@@ -277,7 +279,11 @@ namespace App.AdminPortalServices.Services
                             model.CompanyName = userDetail.CompanyName;
                             model.ContactNo = userDetail.ContactNo;
                             model.InventoryPermissionIds = userDetail.InventoryPermissionIds;
+                            model.InventoryRole = await _InventoryRole.GetSingle(x => x.InventoryRoleId == model.InventoryRoleId);
+
                             CreateUserSession = true;
+
+                        inventoryRole = await _InventoryRole.GetSingle(x => x.InventoryRoleId == model.InventoryRoleId);
 
                     }
                     else
@@ -464,16 +470,7 @@ namespace App.AdminPortalServices.Services
                 }
                 //await _staticService.Commit(); // do not move this code to above this lines, it has some reason
 
-                if (otp.Status == true)
-                {
-                    OTPToken OTPTokenData = new OTPToken() { RefCode = otp.RefCode.ToString(), Expiry = _appConfig.otpConfigs.Expiry, ExpiryTime = (DateTime)otp.ValidUpto };
-                    result.Data = OTPTokenData;
-
-                    //await _cacheService.Write(CacheChannels.Website, "OTP:" + model.MobileNo + "-" + model.OTPFor, CommonLib.ConvertObjectToJson(OTPTokenData), _appConfig.otpConfigs.Expiry);
-                    string OtpKey = otp.RefCode.ToString() + "-" + otp.MobileNo;
-                    await _cacheService.Write(CacheChannels.AdminPortal, "OTP:" + OtpKey, CommonLib.ConvertObjectToJson(OTPTokenData), _appConfig.otpConfigs.Expiry);
-                    await _cacheService.Write(CacheChannels.AdminPortal, "OTP" , otp.OTPNumber, _appConfig.otpConfigs.Expiry);
-                }
+              
             }
             catch (Exception ex)
             {

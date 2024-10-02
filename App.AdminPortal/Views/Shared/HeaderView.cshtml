@@ -1,4 +1,4 @@
-﻿
+﻿@inject AdminPortalStaticService _staticService
 <div class="header header-one">
     <a href="index.html" class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
         <img src="~/assets/img/logo.png" class="img-fluid logo2" alt="Logo">
@@ -157,8 +157,8 @@
                     <span class="animate-circle"></span>
                 </span>
                 <span class="user-content">
-                    <span class="user-details">Admin</span>
-                    <span class="user-name">John Smith</span>
+                    <span class="user-details">@_staticService.LoginUser.InventoryRole.RoleName</span>
+                    <span class="user-name">@_staticService.LoginUser.FirstName</span>
                 </span>
             </a>
             <div class="dropdown-menu menu-drop-user">
