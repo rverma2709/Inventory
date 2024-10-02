@@ -42,5 +42,6 @@ namespace Root.Services.DBContext
         public DbSet<OTP> OTPs { get; set; }
         public DbSet<EmailLog> EmailLogs { get; set; }
         public DbSet<InventoryRole> InventoryRoles { get; set; }
+        public DbSet<InquiryDetail> InquiryDetails { get; set; }
     }
 }

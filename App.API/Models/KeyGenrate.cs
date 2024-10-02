@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Caching.Memory;
 using Root.Models.Utils;
 using Root.Services.Interfaces;
 using System;
@@ -12,8 +14,10 @@ namespace App.API.Models
     public class KeyGenrate : Attribute, IAsyncResultFilter
     {
         private readonly ICacheService _cacheService;
-        public KeyGenrate(ICacheService cacheService) {
+        private readonly IMemoryCache _memoryCache;
+        public KeyGenrate(ICacheService cacheService, IMemoryCache memoryCache) {
             _cacheService= cacheService;
+            _memoryCache= memoryCache;
         }
         
 
@@ -21,15 +25,32 @@ namespace App.API.Models
         {
             
             var uniqueKey = Guid.NewGuid().ToString();
-            if(await _cacheService.KeyExists(CacheChannels.AdminPortal, "apikey"))
+
+            if (_memoryCache.TryGetValue("apikey", out _))
             {
-                await _cacheService.Delete(CacheChannels.AdminPortal, "apikey");
+                _memoryCache.Remove("apikey");
             }
-            await _cacheService.Write(CacheChannels.AdminPortal, "apikey", uniqueKey);
-            
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+                SlidingExpiration = TimeSpan.FromMinutes(2)
+            };
+
+            _memoryCache.Set("apikey", uniqueKey, cacheEntryOptions);
+          
+
             context.HttpContext.Response.Headers.Add("apikey", uniqueKey);
 
-            
+            //if (await _cacheService.KeyExists(CacheChannels.AdminPortal, "apikey"))
+            //{
+            //    await _cacheService.Delete(CacheChannels.AdminPortal, "apikey");
+            //}
+            //await _cacheService.Write(CacheChannels.AdminPortal, "apikey", uniqueKey);
+
+            //context.HttpContext.Response.Headers.Add("apikey", uniqueKey);
+
+
             await next();
         }
     }
