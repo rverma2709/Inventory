@@ -289,15 +289,17 @@ namespace App.AdminPortal.Controllers
         [PreventDuplicateRequests]
         public async Task<IActionResult> ADDRecivingItem(RecivingItemView model)
         {
-            if(model.SeriolNumber!=null)
+            try
             {
-                Tuple<bool, string> tuple = ValidateModel(model);
-                if (tuple.Item1)
+                if (model.SeriolNumber != null)
                 {
+                    Tuple<bool, string> tuple = ValidateModel(model);
+                    if (tuple.Item1)
+                    {
 
-                    List<SeriolNumberData> seriolNumberDatas = new List<SeriolNumberData> { new SeriolNumberData() { SeriolNumber = model.SeriolNumber } };
+                        List<SeriolNumberData> seriolNumberDatas = new List<SeriolNumberData> { new SeriolNumberData() { SeriolNumber = model.SeriolNumber } };
 
-                    List<RecivingItemList> recivingItemList = new List<RecivingItemList>() {
+                        List<RecivingItemList> recivingItemList = new List<RecivingItemList>() {
                         new RecivingItemList()
                         {
                             PoDetailId=model.PoDetailId,
@@ -306,31 +308,37 @@ namespace App.AdminPortal.Controllers
                         }
 
                       };
-                    List<RecivingItemRetunData> recivingItemRetuns = await _staticService.ExecuteSPAsync<DBEntities, RecivingItemRetunData>(new SFRecevingItemDetails() { SeriolNumberData = seriolNumberDatas, RecivingItemList = recivingItemList });
-                    if (recivingItemRetuns[0].ErrorMessage!=null)
-                    {
-                        HttpContext.Session.SetObject(ProgConstants.ErrMsg, recivingItemRetuns[0].ErrorMessage);
+                        List<RecivingItemRetunData> recivingItemRetuns = await _staticService.ExecuteSPAsync<DBEntities, RecivingItemRetunData>(new SFRecevingItemDetails() { SeriolNumberData = seriolNumberDatas, RecivingItemList = recivingItemList });
+                        if (recivingItemRetuns[0].ErrorMessage != null)
+                        {
+                            HttpContext.Session.SetObject(ProgConstants.ErrMsg, recivingItemRetuns[0].ErrorMessage);
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetObject(ProgConstants.SuccMsg, "success");
+                        }
+
                     }
                     else
                     {
-                        HttpContext.Session.SetObject(ProgConstants.SuccMsg, "success");
+                        HttpContext.Session.SetObject(ProgConstants.ErrMsg, tuple.Item2);
+                        return RedirectToAction("ADDRecivingItem", "RecivingItem");
                     }
-                    
+                    return RedirectToAction("ADDRecivingItem", "RecivingItem");
                 }
                 else
                 {
-                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, tuple.Item2);
+                    HttpContext.Session.SetObject(ProgConstants.ErrMsg, "SeriolNumber not blank");
                     return RedirectToAction("ADDRecivingItem", "RecivingItem");
                 }
-                return RedirectToAction("ADDRecivingItem", "RecivingItem");
             }
-            else
+            catch (Exception ex)
             {
-                HttpContext.Session.SetObject(ProgConstants.ErrMsg, "SeriolNumber not blank");
-                return RedirectToAction("ADDRecivingItem", "RecivingItem");
+
             }
 
-            
+            return RedirectToAction("ADDRecivingItem", "RecivingItem");
+
         }
 
     }
