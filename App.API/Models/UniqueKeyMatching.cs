@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Root.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace App.API.Models
 {
     public class UniqueKeyMatching : Attribute, IAsyncActionFilter
     {
         private readonly ICacheService _cacheService;
+        private readonly IMemoryCache _memoryCache;
 
-        public UniqueKeyMatching(ICacheService cacheService)
+        public UniqueKeyMatching(ICacheService cacheService, IMemoryCache memoryCache)
         {
             _cacheService = cacheService;
+            _memoryCache = memoryCache;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -21,9 +24,10 @@ namespace App.API.Models
             if (requestHeaders.TryGetValue("X-Unique-Key", out var requestUniqueKey))
             {
                 
-                var cachedUniqueKey =  await _cacheService.Read(CacheChannels.AdminPortal, "X-Unique-Key"); ;
+                //var cachedUniqueKey =  await _cacheService.Read(CacheChannels.AdminPortal, "X-Unique-Key"); ;
+                var cachedUniqueKey =  _memoryCache.Get("X-Unique-Key");
 
-               
+
                 if (cachedUniqueKey == requestUniqueKey)
                 {
                     

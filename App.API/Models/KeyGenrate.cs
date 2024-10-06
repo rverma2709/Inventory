@@ -37,10 +37,10 @@ namespace App.API.Models
                 SlidingExpiration = TimeSpan.FromMinutes(2)
             };
 
-            _memoryCache.Set("apikey", uniqueKey, cacheEntryOptions);
+            _memoryCache.Set("X-Unique-Key", uniqueKey, cacheEntryOptions);
           
 
-            context.HttpContext.Response.Headers.Add("apikey", uniqueKey);
+            context.HttpContext.Response.Headers.Add("X-Unique-Key", uniqueKey);
 
             //if (await _cacheService.KeyExists(CacheChannels.AdminPortal, "apikey"))
             //{

@@ -89,16 +89,17 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
+    options.AddPolicy("AllowAllOrigins",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")  // Specify your frontend origin here
-                  .AllowAnyHeader()                      // Allow any header
-                  .AllowAnyMethod()                      // Allow any method (GET, POST, etc.)
-                  .AllowCredentials()                // Allow credentials (if needed)
-                  .WithExposedHeaders("apikey");
+            policy.AllowAnyOrigin()          // Allow any origin
+                  .AllowAnyHeader()          // Allow any header
+                  .AllowAnyMethod()          // Allow any method (GET, POST, etc.)
+                  //.AllowCredentials()        // Allow credentials (if needed)
+                  .WithExposedHeaders("X-Unique-Key");  // Expose specific headers
         });
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -107,7 +108,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowSpecificOrigin");
+
+app.UseCors("AllowAllOrigins");  // Apply the CORS policy
+
 app.UseAuthorization();
 
 
